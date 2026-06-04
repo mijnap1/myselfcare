@@ -33,6 +33,7 @@ bodyProgressTab.addEventListener("click", () => setActiveBodySection("progress")
 bodyWorkoutTab.addEventListener("click", () => setActiveBodySection("workouts"));
 signInTab.addEventListener("click", () => setAuthMode("sign-in"));
 signUpTab.addEventListener("click", () => setAuthMode("sign-up"));
+resetPasswordButton.addEventListener("click", () => setAuthMode("reset-password"));
 authForm.addEventListener("submit", handleAuthSubmit);
 logoutButton.addEventListener("click", handleLogout);
 duplicateWeekButton.addEventListener("click", duplicateCurrentWeekToNextWeek);

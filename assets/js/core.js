@@ -177,6 +177,7 @@ const authMessage = document.getElementById("authMessage");
 const authSubmit = document.getElementById("authSubmit");
 const signInTab = document.getElementById("signInTab");
 const signUpTab = document.getElementById("signUpTab");
+const resetPasswordButton = document.getElementById("resetPasswordButton");
 const undoToast = document.getElementById("undoToast");
 const undoToastMessage = document.getElementById("undoToastMessage");
 const undoToastButton = document.getElementById("undoToastButton");
@@ -1381,14 +1382,32 @@ function setAuthMessage(message, tone = "") {
 function setAuthMode(mode) {
   authMode = mode;
   const isSignIn = mode === "sign-in";
+  const isReset = mode === "reset-password";
   signInTab.classList.toggle("is-active", isSignIn);
-  signUpTab.classList.toggle("is-active", !isSignIn);
+  signUpTab.classList.toggle("is-active", mode === "sign-up");
   signInTab.setAttribute("aria-selected", String(isSignIn));
-  signUpTab.setAttribute("aria-selected", String(!isSignIn));
-  authSubmit.innerHTML = isSignIn
-    ? '<ion-icon name="log-in-outline" aria-hidden="true"></ion-icon><span>로그인</span>'
+  signUpTab.setAttribute("aria-selected", String(mode === "sign-up"));
+  resetPasswordButton.classList.toggle("is-active", isReset);
+
+  if (isSignIn) {
+    authSubmit.innerHTML =
+      '<ion-icon name="log-in-outline" aria-hidden="true"></ion-icon><span>로그인</span>';
+    authPassword.autocomplete = "current-password";
+    authPassword.placeholder = "비밀번호 입력";
+    setAuthMessage("같은 이름과 비밀번호로 언제든 다시 로그인할 수 있어요.");
+    return;
+  }
+
+  authPassword.autocomplete = "new-password";
+  authPassword.placeholder = isReset ? "새 비밀번호 입력" : "비밀번호 입력";
+  authSubmit.innerHTML = isReset
+    ? '<ion-icon name="key-outline" aria-hidden="true"></ion-icon><span>비밀번호 재설정</span>'
     : '<ion-icon name="person-add-outline" aria-hidden="true"></ion-icon><span>회원가입</span>';
-  authPassword.autocomplete = isSignIn ? "current-password" : "new-password";
+  setAuthMessage(
+    isReset
+      ? "이름과 새 비밀번호를 입력하면 기존 비밀번호를 확인하거나 보여주지 않고 재설정합니다."
+      : "새 계정에 사용할 이름과 비밀번호를 입력해 주세요."
+  );
 }
 
 function updateAuthUI() {
@@ -1489,10 +1508,19 @@ async function handleAuthSubmit(event) {
     return;
   }
 
+  if (password.length < 6) {
+    setAuthMessage("비밀번호는 6자 이상이어야 합니다.", "error");
+    return;
+  }
+
   authSubmit.disabled = true;
 
-  const rpcName =
-    authMode === "sign-in" ? "skin_journal_sign_in" : "skin_journal_sign_up";
+  const rpcByMode = {
+    "sign-in": "skin_journal_sign_in",
+    "sign-up": "skin_journal_sign_up",
+    "reset-password": "skin_journal_reset_password",
+  };
+  const rpcName = rpcByMode[authMode] || rpcByMode["sign-in"];
 
   const { data, error } = await supabaseClient.rpc(rpcName, {
     p_username: normalizeUsername(username),
@@ -1507,8 +1535,16 @@ async function handleAuthSubmit(event) {
       USERNAME_TAKEN: "이미 사용 중인 이름입니다.",
       USERNAME_TOO_SHORT: "이름은 3자 이상으로 입력해 주세요.",
       PASSWORD_TOO_SHORT: "비밀번호는 6자 이상이어야 합니다.",
+      USER_NOT_FOUND: "해당 이름의 계정을 찾을 수 없습니다.",
     };
     setAuthMessage(messageMap[error.message] || error.message, "error");
+    return;
+  }
+
+  if (authMode === "reset-password") {
+    authForm.reset();
+    setAuthMode("sign-in");
+    setAuthMessage("비밀번호가 재설정되었습니다. 새 비밀번호로 로그인해 주세요.", "success");
     return;
   }
 

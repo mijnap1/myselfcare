@@ -483,6 +483,29 @@ h3 {
   grid-column: 1 / -1;
 }
 
+.auth-reset-option {
+  justify-self: start;
+  grid-column: 1 / -1;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.auth-reset-option:hover,
+.auth-reset-option:focus-visible,
+.auth-reset-option.is-active {
+  outline: none;
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 .auth-field {
   display: grid;
   gap: 8px;
@@ -534,4 +557,3 @@ h3 {
   display: grid;
   gap: 16px;
 }
-
