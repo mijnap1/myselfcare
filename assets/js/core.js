@@ -1,8 +1,8 @@
 const STORAGE_KEY = "my-skin-journal-routine-v1";
 const THEME_STORAGE_KEY = "my-skin-journal-theme";
 const SESSION_STORAGE_KEY = "my-skin-journal-session";
-const SUPABASE_URL = "https://vglbxczlwztpwdpvcmte.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_xruzoF0QoYwU5V7nHspv1g_yfICa38n";
+const SUPABASE_URL = "https://tbucpvdgloxlnuylpron.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRidWNwdmRnbG94bG51eWxwcm9uIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MTUzODIsImV4cCI6MjEwMjI5MTM4Mn0._nolrjZC3ak16U5I2QURFVCM4U9qivN8XxDiTBpbp9U";
 const TIMELINE_WINDOW_DAYS = 21;
 const TIMELINE_APPEND_DAYS = 7;
 const KOREAN_WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
