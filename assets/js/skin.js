@@ -1,3 +1,6 @@
+let routineRepeatMenu = null;
+let routineRepeatState = null;
+
 function ensureVisibleWeekRange() {
   if (visibleWeekStart < 0) {
     visibleWeekStart = 0;
@@ -70,6 +73,7 @@ function renderJournalSummary() {
   const weekProgress = getWeekProgress();
   const streak = getCurrentStreak();
   const moodMeta = getMoodMeta(todayEntry.mood);
+  const todayFilledCount = getEntryFilledCount(todayEntry);
 
   journalSummary.innerHTML = `
     <div class="summary-overview">
@@ -80,26 +84,15 @@ function renderJournalSummary() {
           ${moodMeta ? `${moodMeta.label} mood selected.` : "오늘 피부 컨디션을 골라두면 기록이 더 쉬워져요."}
         </p>
       </div>
-      <div class="summary-progress">
-        <div class="summary-progress-ring">
-          <strong>${weekProgress.percentage}%</strong>
-          <span>this week</span>
-        </div>
+      <div class="summary-progress-card">
+        <strong>${weekProgress.percentage}%</strong>
+        <span>this week</span>
       </div>
     </div>
-    <div class="summary-stats">
-      <div class="summary-stat">
-        <span class="summary-stat-label">Completed</span>
-        <strong>${weekProgress.doneCount}/${weekProgress.total}</strong>
-      </div>
-      <div class="summary-stat">
-        <span class="summary-stat-label">Streak</span>
-        <strong>${streak} day${streak === 1 ? "" : "s"}</strong>
-      </div>
-      <div class="summary-stat">
-        <span class="summary-stat-label">Entries</span>
-        <strong>${getEntryFilledCount(todayEntry)} filled</strong>
-      </div>
+    <div class="summary-meta">
+      <span><strong>${weekProgress.doneCount}/${weekProgress.total}</strong> done</span>
+      <span><strong>${streak}</strong> day streak</span>
+      <span><strong>${todayFilledCount}/5</strong> filled today</span>
     </div>
     <div class="summary-bar">
       <span class="summary-bar-fill" style="width: ${weekProgress.percentage}%"></span>
@@ -682,8 +675,56 @@ function createTextarea(value, index, field, extraClass = "") {
   textarea.value = value;
   textarea.setAttribute("data-index", index);
   textarea.setAttribute("data-field", field);
+  textarea.addEventListener("keydown", handleRoutineEditorShortcut);
   attachContextMenu(textarea);
   return textarea;
+}
+
+function stripRoutineAccentMarkers(value) {
+  return String(value || "").replace(/==([^=]+)==/g, "$1");
+}
+
+function appendAccentedText(parent, text) {
+  String(text || "")
+    .split(/(==[^=]+==)/g)
+    .filter(Boolean)
+    .forEach((chunk) => {
+      if (chunk.startsWith("==") && chunk.endsWith("==")) {
+        const accent = document.createElement("span");
+        accent.className = "routine-accent";
+        accent.textContent = chunk.slice(2, -2);
+        parent.appendChild(accent);
+        return;
+      }
+
+      parent.appendChild(document.createTextNode(chunk));
+    });
+}
+
+function handleRoutineEditorShortcut(event) {
+  if (event.key.toLowerCase() !== "b" || (!event.metaKey && !event.ctrlKey)) {
+    return;
+  }
+
+  event.preventDefault();
+  const textarea = event.currentTarget;
+  const { selectionStart, selectionEnd, value } = textarea;
+  const selectedText = value.slice(selectionStart, selectionEnd);
+  const before = value.slice(0, selectionStart);
+  const after = value.slice(selectionEnd);
+
+  if (before.endsWith("==") && after.startsWith("==")) {
+    textarea.value = `${before.slice(0, -2)}${selectedText}${after.slice(2)}`;
+    textarea.setSelectionRange(selectionStart - 2, selectionEnd - 2);
+  } else if (selectedText) {
+    textarea.value = `${before}==${selectedText}==${after}`;
+    textarea.setSelectionRange(selectionStart + 2, selectionEnd + 2);
+  } else {
+    textarea.value = `${before}====${after}`;
+    textarea.setSelectionRange(selectionStart + 2, selectionStart + 2);
+  }
+
+  textarea.dispatchEvent(new Event("input", { bubbles: true }));
 }
 
 function createCheckbox(checked, index) {
@@ -695,6 +736,151 @@ function createCheckbox(checked, index) {
   checkbox.addEventListener("change", handleDoneToggle);
   checkbox.setAttribute("aria-label", `${routineData[index].date} 완료 체크`);
   return checkbox;
+}
+
+function closeRoutineRepeatMenu() {
+  if (routineRepeatMenu) {
+    routineRepeatMenu.hidden = true;
+  }
+  routineRepeatState = null;
+}
+
+function getRoutineRepeatMenu() {
+  if (routineRepeatMenu) {
+    return routineRepeatMenu;
+  }
+
+  routineRepeatMenu = document.createElement("div");
+  routineRepeatMenu.className = "routine-repeat-menu";
+  routineRepeatMenu.hidden = true;
+  routineRepeatMenu.innerHTML = `
+    <button type="button" data-repeat-days="3">Every 3 days</button>
+    <button type="button" data-repeat-days="7">Weekly</button>
+    <button type="button" data-repeat-days="14">Every 2 weeks</button>
+    <div class="routine-repeat-custom">
+      <span>Custom</span>
+      <input
+        type="number"
+        min="1"
+        max="60"
+        value="10"
+        inputmode="numeric"
+        data-repeat-custom-input
+        aria-label="Custom repeat days"
+      />
+      <button type="button" data-repeat-custom>Apply</button>
+    </div>
+  `;
+  routineRepeatMenu.addEventListener("click", (event) => {
+    const button = event.target.closest("button");
+    if (!button || !routineRepeatState) {
+      return;
+    }
+
+    if (button.hasAttribute("data-repeat-custom")) {
+      const input = routineRepeatMenu.querySelector("[data-repeat-custom-input]");
+      applyRoutineRepeat(Number(input?.value));
+      return;
+    }
+
+    applyRoutineRepeat(Number(button.dataset.repeatDays));
+  });
+  routineRepeatMenu.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" || !event.target.matches("[data-repeat-custom-input]")) {
+      return;
+    }
+
+    event.preventDefault();
+    applyRoutineRepeat(Number(event.target.value));
+  });
+
+  document.addEventListener("pointerdown", (event) => {
+    if (!routineRepeatMenu.hidden && !routineRepeatMenu.contains(event.target)) {
+      closeRoutineRepeatMenu();
+    }
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeRoutineRepeatMenu();
+    }
+  });
+  document.body.appendChild(routineRepeatMenu);
+  return routineRepeatMenu;
+}
+
+function openRoutineRepeatMenu(event, index, field) {
+  event.preventDefault();
+  event.stopPropagation();
+  const value = routineData[index]?.[field]?.trim();
+  if (!value) {
+    return;
+  }
+
+  routineRepeatState = { index, field, value };
+  const menu = getRoutineRepeatMenu();
+  const rect = event.currentTarget.getBoundingClientRect();
+  menu.style.left = `${Math.max(8, Math.min(rect.left, window.innerWidth - 232))}px`;
+  menu.style.top = `${rect.bottom + 8}px`;
+  menu.hidden = false;
+}
+
+function applyRoutineRepeat(days) {
+  if (!routineRepeatState || !Number.isInteger(days) || days < 1 || days > 60) {
+    if (routineRepeatState) {
+      flashStatus("반복 간격은 1-60일 사이로 입력해 주세요.", "reset");
+    }
+    closeRoutineRepeatMenu();
+    return;
+  }
+
+  const { index, field, value } = routineRepeatState;
+  const endDate = addDays(routineData[index].date, 84);
+  while (routineData[routineData.length - 1].date < endDate) {
+    routineData.push(createEmptyEntry(addDays(routineData[routineData.length - 1].date, 1)));
+  }
+
+  let filledCount = 0;
+  const previousValues = [];
+  for (let targetIndex = index + days; targetIndex < routineData.length; targetIndex += days) {
+    if (routineData[targetIndex].date > endDate) {
+      break;
+    }
+
+    if (!routineData[targetIndex][field].trim()) {
+      previousValues.push({
+        index: targetIndex,
+        value: routineData[targetIndex][field],
+      });
+      routineData[targetIndex][field] = value;
+      filledCount += 1;
+    }
+  }
+
+  closeRoutineRepeatMenu();
+  saveRoutine(filledCount ? `${filledCount}개 날짜에 반복 적용했어요.` : "비어 있는 반복 날짜가 없어요.");
+  render();
+  if (filledCount) {
+    showUndoToast("반복 적용했어요.", () => {
+      previousValues.forEach((item) => {
+        if (routineData[item.index]) {
+          routineData[item.index][field] = item.value;
+        }
+      });
+      saveRoutine("반복 적용을 되돌렸어요.");
+      render();
+    });
+  }
+}
+
+function createRepeatButton(index, field) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "cell-repeat-button";
+  button.innerHTML = '<ion-icon name="repeat-outline" aria-hidden="true"></ion-icon>';
+  button.setAttribute("aria-label", `${routineData[index].date} ${field} repeat`);
+  button.addEventListener("click", (event) => openRoutineRepeatMenu(event, index, field));
+  button.addEventListener("keydown", (event) => event.stopPropagation());
+  return button;
 }
 
 function createRoutineDisplay(value, index, field, isNotes = false) {
@@ -722,8 +908,10 @@ function createRoutineDisplay(value, index, field, isNotes = false) {
   if (isNotes) {
     const note = document.createElement("div");
     note.className = "note-text";
-    note.textContent = value.trim() ? value : "메모를 남겨보세요.";
-    if (!value.trim()) {
+    if (value.trim()) {
+      appendAccentedText(note, value);
+    } else {
+      note.textContent = "메모를 남겨보세요.";
       note.classList.add("cell-placeholder");
     }
     display.appendChild(note);
@@ -738,6 +926,7 @@ function createRoutineDisplay(value, index, field, isNotes = false) {
     return display;
   }
 
+  display.classList.add("has-repeat");
   const wrapper = document.createElement("div");
   wrapper.className = "routine-steps";
   getRoutineParts(value).forEach((part) => {
@@ -746,11 +935,12 @@ function createRoutineDisplay(value, index, field, isNotes = false) {
       if (/레티놀|비타민C|클레이|마스크팩|에스트라|선크림|나이아신아마이드/.test(part)) {
         step.classList.add("is-emphasis");
       }
-      step.textContent = part;
+      appendAccentedText(step, part);
       wrapper.appendChild(step);
     });
 
   display.appendChild(wrapper);
+  display.appendChild(createRepeatButton(index, field));
   return display;
 }
 
@@ -898,12 +1088,12 @@ function renderTable() {
     noteCell.appendChild(createRoutineDisplay(entry.notes, actualIndex, "notes", true));
 
     row.append(
+      doneCell,
       dateCell,
       morningCell,
       eveningCell,
       skincareCell,
       extraCell,
-      doneCell,
       noteCell
     );
     tableBody.appendChild(row);
@@ -923,13 +1113,16 @@ function renderMobileCards() {
     }`;
 
     const skincareSummary = entry.skincare.trim()
-      ? getRoutineParts(entry.skincare)[0] || "루틴 비어 있음"
+      ? stripRoutineAccentMarkers(getRoutineParts(entry.skincare)[0]) || "루틴 비어 있음"
       : "루틴 비어 있음";
     const extraSummary = entry.extraCare.trim() || "추가 케어 없음";
     const moodMeta = getMoodMeta(entry.mood);
 
     card.innerHTML = `
       <div class="mobile-card-head">
+        <label class="mobile-done-toggle" aria-label="${entry.date} 완료 체크">
+          <span>Done</span>
+        </label>
         <div class="mobile-card-main">
           <div class="mobile-day-wrap">
             <div class="mobile-day ${entry.date === todayKey ? "today-label" : ""}">
@@ -950,9 +1143,6 @@ function renderMobileCards() {
           </div>
         </div>
         <div class="mobile-card-actions">
-          <label class="mobile-done-toggle" aria-label="${entry.date} 완료 체크">
-            <span>Done</span>
-          </label>
           <button class="mobile-icon-button mobile-edit-button" type="button" aria-label="Edit ${entry.date}">
             <ion-icon name="${isEditing ? "checkmark-outline" : "create-outline"}" aria-hidden="true"></ion-icon>
           </button>

@@ -15,9 +15,9 @@
       href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&family=Red+Hat+Mono:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="assets/css/base.css" />
-    <link rel="stylesheet" href="assets/css/components.css" />
-    <link rel="stylesheet" href="assets/css/responsive.css" />
+    <link rel="stylesheet" href="assets/css/base.css?v=10" />
+    <link rel="stylesheet" href="assets/css/components.css?v=10" />
+    <link rel="stylesheet" href="assets/css/responsive.css?v=10" />
   </head>
   <body>
     <div class="page-shell">
@@ -93,10 +93,10 @@
             <ion-icon name="shield-checkmark-outline" aria-hidden="true"></ion-icon>
             <span>Account</span>
           </p>
-          <h2>간단하게 시작하기</h2>
+          <h2>계정으로 계속하기</h2>
           <p class="section-note">
-            이름과 비밀번호만 만들면 됩니다. 이메일 인증 없이 바로 들어가고,
-            같은 이름으로 다른 기기에서도 내 셀프케어 기록을 이어서 사용할 수 있어요.
+            이름과 비밀번호만으로 기록을 저장하세요. Supabase 연결이 안 되면
+            이 브라우저에 로컬 계정으로 저장됩니다.
           </p>
         </div>
 
@@ -124,7 +124,7 @@
           </button>
         </form>
         <button id="resetPasswordButton" class="auth-reset-option" type="button">
-          비밀번호를 잊으셨나요? Reset password
+          비밀번호 재설정
         </button>
 
         <p id="authMessage" class="auth-message" aria-live="polite">
@@ -197,22 +197,22 @@
             <div class="table-wrap">
               <table class="routine-table">
                 <colgroup>
+                  <col class="col-done" />
                   <col class="col-day" />
                   <col class="col-morning" />
                   <col class="col-evening" />
                   <col class="col-skincare" />
                   <col class="col-extra" />
-                  <col class="col-done" />
                   <col class="col-notes" />
                 </colgroup>
                 <thead>
                   <tr>
+                    <th>Done</th>
                     <th>Date</th>
                     <th>Morning routine</th>
                     <th>Evening cleanse</th>
                     <th>Afternoon/Evening skincare</th>
                     <th>Extra care</th>
-                    <th>Done</th>
                     <th>Notes</th>
                   </tr>
                 </thead>
@@ -720,8 +720,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="assets/js/core.js?v=2"></script>
-    <script src="assets/js/skin.js"></script>
+    <script src="assets/js/core.js?v=4"></script>
+    <script src="assets/js/skin.js?v=7"></script>
     <script src="assets/js/body.js"></script>
     <script src="assets/js/style-care.js"></script>
     <script src="assets/js/init.js"></script>

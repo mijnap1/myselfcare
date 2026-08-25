@@ -147,11 +147,6 @@ setStyleCategory(styleCategory);
 setSkinProductStatus(skinProductStatus);
 setSkinProductTargetCell(skinProductTargetCell.season, skinProductTargetCell.skinType);
 
-if (supabaseClient) {
-  syncSession();
-} else {
-  updateAuthUI();
-  setAuthMessage("script.js에 Supabase URL과 anon key를 넣으면 로그인 기능이 활성화됩니다.");
-}
+syncSession();
 
 render();
