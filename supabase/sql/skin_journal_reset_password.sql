@@ -7,7 +7,7 @@ create or replace function public.skin_journal_reset_password(
 returns boolean
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_username text := lower(trim(coalesce(p_username, '')));
@@ -22,8 +22,7 @@ begin
   end if;
 
   update public.skin_journal_users
-     set password_hash = crypt(p_password, gen_salt('bf')),
-         updated_at = now()
+     set password_hash = extensions.crypt(p_password, extensions.gen_salt('bf'))
    where username = v_username
    returning id into v_user_id;
 

@@ -1,6 +1,8 @@
 const STORAGE_KEY = "my-skin-journal-routine-v1";
 const THEME_STORAGE_KEY = "my-skin-journal-theme";
 const SESSION_STORAGE_KEY = "my-skin-journal-session";
+const LOCAL_ACCOUNTS_STORAGE_KEY = "my-skin-journal-local-accounts";
+const LOCAL_SESSION_PREFIX = "local:";
 const SUPABASE_URL = "https://tbucpvdgloxlnuylpron.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRidWNwdmRnbG94bG51eWxwcm9uIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MTUzODIsImV4cCI6MjEwMjI5MTM4Mn0._nolrjZC3ak16U5I2QURFVCM4U9qivN8XxDiTBpbp9U";
 const TIMELINE_WINDOW_DAYS = 21;
@@ -605,6 +607,16 @@ function createEmptyStyleData() {
   };
 }
 
+function createEmptyAppPayload() {
+  return {
+    version: 6,
+    skinTimeline: createEmptyTimeline(),
+    bodyProgress: createEmptyBodyData(),
+    skinLibrary: createEmptySkinLibraryData(),
+    styleBoard: createEmptyStyleData(),
+  };
+}
+
 function normalizeBodyData(data) {
   if (!data || typeof data !== "object") {
     return createEmptyBodyData();
@@ -976,6 +988,129 @@ function loadActiveBodySection() {
 
 function loadSessionToken() {
   return localStorage.getItem(SESSION_STORAGE_KEY) || "";
+}
+
+function loadLocalAccounts() {
+  try {
+    const saved = localStorage.getItem(LOCAL_ACCOUNTS_STORAGE_KEY);
+    const parsed = saved ? JSON.parse(saved) : {};
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+  } catch (error) {
+    console.warn("Failed to read local accounts:", error);
+    return {};
+  }
+}
+
+function saveLocalAccounts(accounts) {
+  localStorage.setItem(LOCAL_ACCOUNTS_STORAGE_KEY, JSON.stringify(accounts));
+}
+
+function isLocalSessionToken(token) {
+  return typeof token === "string" && token.startsWith(LOCAL_SESSION_PREFIX);
+}
+
+function getLocalSessionUsername(token) {
+  if (!isLocalSessionToken(token)) {
+    return "";
+  }
+
+  return decodeURIComponent(token.slice(LOCAL_SESSION_PREFIX.length));
+}
+
+function createLocalSessionToken(username) {
+  return `${LOCAL_SESSION_PREFIX}${encodeURIComponent(username)}`;
+}
+
+function createLocalPasswordSalt() {
+  const bytes = crypto.getRandomValues(new Uint8Array(16));
+  return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+async function hashLocalPassword(password, salt) {
+  const bytes = new TextEncoder().encode(`${salt}:${password}`);
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function shouldUseLocalAuthFallback(error) {
+  return /failed to fetch|invalid api key/i.test(error?.message || "");
+}
+
+async function runLocalAuth(rpcName, username, password) {
+  const normalizedUsername = normalizeUsername(username);
+  const accounts = loadLocalAccounts();
+  const account = accounts[normalizedUsername];
+
+  if (rpcName === "skin_journal_sign_up") {
+    if (account) {
+      return { data: null, error: { message: "USERNAME_TAKEN" } };
+    }
+
+    const salt = createLocalPasswordSalt();
+    accounts[normalizedUsername] = {
+      username: normalizedUsername,
+      salt,
+      passwordHash: await hashLocalPassword(password, salt),
+      data: createEmptyAppPayload(),
+    };
+    saveLocalAccounts(accounts);
+
+    return {
+      data: {
+        username: normalizedUsername,
+        token: createLocalSessionToken(normalizedUsername),
+      },
+      error: null,
+    };
+  }
+
+  if (!account) {
+    return { data: null, error: { message: "USER_NOT_FOUND" } };
+  }
+
+  const passwordHash = await hashLocalPassword(password, account.salt);
+  if (passwordHash !== account.passwordHash) {
+    return { data: null, error: { message: "INVALID_CREDENTIALS" } };
+  }
+
+  if (rpcName === "skin_journal_reset_password") {
+    const salt = createLocalPasswordSalt();
+    accounts[normalizedUsername] = {
+      ...account,
+      salt,
+      passwordHash: await hashLocalPassword(password, salt),
+    };
+    saveLocalAccounts(accounts);
+    return { data: true, error: null };
+  }
+
+  return {
+    data: {
+      username: normalizedUsername,
+      token: createLocalSessionToken(normalizedUsername),
+    },
+    error: null,
+  };
+}
+
+function loadLocalAccountPayload() {
+  const username = getLocalSessionUsername(currentSessionToken);
+  const account = loadLocalAccounts()[username];
+  return account ? normalizeAppData(account.data) : null;
+}
+
+function saveLocalAccountPayload() {
+  const username = getLocalSessionUsername(currentSessionToken);
+  const accounts = loadLocalAccounts();
+  if (!username || !accounts[username]) {
+    return;
+  }
+
+  accounts[username] = {
+    ...accounts[username],
+    data: buildAppPayload(),
+  };
+  saveLocalAccounts(accounts);
 }
 
 function hasSupabaseConfig() {
@@ -1424,13 +1559,54 @@ function updateAuthUI() {
 }
 
 async function loadRemoteRoutine() {
-  if (!supabaseClient || !currentSessionToken) {
+  if (!currentSessionToken) {
     return;
   }
 
-  const { data, error } = await supabaseClient.rpc("skin_journal_get_routine", {
-    p_token: currentSessionToken,
-  });
+  if (isLocalSessionToken(currentSessionToken)) {
+    const localAppData = loadLocalAccountPayload();
+    if (!localAppData) {
+      setAuthMessage("로컬 세션을 찾을 수 없습니다. 다시 로그인해 주세요.", "error");
+      return;
+    }
+
+    if (
+      !hasMeaningfulRoutine(localAppData.skinTimeline) &&
+      !localAppData.bodyProgress.entries.length &&
+      !hasMeaningfulSkinLibrary(localAppData.skinLibrary) &&
+      !hasMeaningfulStyleData(localAppData.styleBoard) &&
+      (hasMeaningfulRoutine(routineData) ||
+        bodyData.entries.length > 0 ||
+        hasMeaningfulSkinLibrary(skinLibraryData) ||
+        hasMeaningfulStyleData(styleData))
+    ) {
+      saveRoutine("현재 기기 루틴을 계정에 저장했어요.");
+      return;
+    }
+
+    routineData = localAppData.skinTimeline;
+    bodyData = localAppData.bodyProgress;
+    skinLibraryData = localAppData.skinLibrary;
+    styleData = localAppData.styleBoard;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(buildAppPayload()));
+    return;
+  }
+
+  if (!supabaseClient) {
+    return;
+  }
+
+  let data = null;
+  let error = null;
+
+  try {
+    ({ data, error } = await supabaseClient.rpc("skin_journal_get_routine", {
+      p_token: currentSessionToken,
+    }));
+  } catch (requestError) {
+    setAuthMessage(`루틴 불러오기 실패: ${requestError.message}`, "error");
+    return;
+  }
 
   if (error) {
     setAuthMessage(`루틴 불러오기 실패: ${error.message}`, "error");
@@ -1461,14 +1637,30 @@ async function loadRemoteRoutine() {
 }
 
 async function saveRoutineRemote() {
-  if (!supabaseClient || !currentSessionToken) {
+  if (!currentSessionToken) {
     return;
   }
 
-  const { error } = await supabaseClient.rpc("skin_journal_save_routine", {
-    p_token: currentSessionToken,
-    p_routine: buildAppPayload(),
-  });
+  if (isLocalSessionToken(currentSessionToken)) {
+    saveLocalAccountPayload();
+    return;
+  }
+
+  if (!supabaseClient) {
+    return;
+  }
+
+  let error = null;
+
+  try {
+    ({ error } = await supabaseClient.rpc("skin_journal_save_routine", {
+      p_token: currentSessionToken,
+      p_routine: buildAppPayload(),
+    }));
+  } catch (requestError) {
+    setAuthMessage(`루틴 저장 실패: ${requestError.message}`, "error");
+    return;
+  }
 
   if (error) {
     setAuthMessage(`루틴 저장 실패: ${error.message}`, "error");
@@ -1476,7 +1668,7 @@ async function saveRoutineRemote() {
 }
 
 function queueRemoteSave() {
-  if (!supabaseClient || !currentSessionToken) {
+  if (!currentSessionToken || (!supabaseClient && !isLocalSessionToken(currentSessionToken))) {
     return;
   }
 
@@ -1489,11 +1681,6 @@ function queueRemoteSave() {
 async function handleAuthSubmit(event) {
   event.preventDefault();
   hideUndoToast();
-
-  if (!supabaseClient) {
-    setAuthMessage("먼저 script.js에 Supabase URL과 anon key를 넣어야 합니다.", "error");
-    return;
-  }
 
   const username = authUsername.value.trim();
   const password = authPassword.value;
@@ -1522,12 +1709,31 @@ async function handleAuthSubmit(event) {
   };
   const rpcName = rpcByMode[authMode] || rpcByMode["sign-in"];
 
-  const { data, error } = await supabaseClient.rpc(rpcName, {
-    p_username: normalizeUsername(username),
-    p_password: password,
-  });
+  let data = null;
+  let error = null;
 
-  authSubmit.disabled = false;
+  try {
+    if (supabaseClient) {
+      ({ data, error } = await supabaseClient.rpc(rpcName, {
+        p_username: normalizeUsername(username),
+        p_password: password,
+      }));
+    } else {
+      error = { message: "Failed to fetch" };
+    }
+
+    if (shouldUseLocalAuthFallback(error)) {
+      ({ data, error } = await runLocalAuth(rpcName, username, password));
+    }
+  } catch (requestError) {
+    if (shouldUseLocalAuthFallback(requestError)) {
+      ({ data, error } = await runLocalAuth(rpcName, username, password));
+    } else {
+      error = requestError;
+    }
+  } finally {
+    authSubmit.disabled = false;
+  }
 
   if (error) {
     const messageMap = {
@@ -1580,13 +1786,17 @@ async function handleAuthSubmit(event) {
 async function handleLogout() {
   hideUndoToast();
 
-  if (supabaseClient && currentSessionToken) {
-    const { error } = await supabaseClient.rpc("skin_journal_sign_out", {
-      p_token: currentSessionToken,
-    });
-    if (error) {
-      setAuthMessage(error.message, "error");
-      return;
+  if (supabaseClient && currentSessionToken && !isLocalSessionToken(currentSessionToken)) {
+    try {
+      const { error } = await supabaseClient.rpc("skin_journal_sign_out", {
+        p_token: currentSessionToken,
+      });
+      if (error) {
+        setAuthMessage(error.message, "error");
+        return;
+      }
+    } catch (requestError) {
+      console.warn("Remote sign out failed:", requestError);
     }
   }
 
@@ -1604,20 +1814,54 @@ async function handleLogout() {
 }
 
 async function syncSession() {
+  if (isLocalSessionToken(currentSessionToken)) {
+    const username = getLocalSessionUsername(currentSessionToken);
+    const account = loadLocalAccounts()[username];
+    if (!account) {
+      currentSessionToken = "";
+      currentUser = null;
+      localStorage.removeItem(SESSION_STORAGE_KEY);
+      updateAuthUI();
+      setAuthMessage("로컬 세션이 만료되었습니다. 다시 로그인해 주세요.");
+      return;
+    }
+
+    currentUser = { username };
+    updateAuthUI();
+    await loadRemoteRoutine();
+    visibleWeekStart = getWeekStartIndex();
+    mobileOpenDay = getTodayIndex();
+    render();
+    setAuthMessage("로컬 계정 기록을 불러왔습니다.", "success");
+    return;
+  }
+
   if (!supabaseClient || !currentSessionToken) {
     currentUser = null;
     updateAuthUI();
     setAuthMessage(
       hasSupabaseConfig()
-        ? "이름과 비밀번호로 로그인하거나 회원가입하세요."
+        ? "이름과 비밀번호로 로그인하거나 회원가입하세요. Supabase에 연결할 수 없으면 로컬 계정으로 저장됩니다."
         : "script.js에 Supabase URL과 anon key를 넣으면 로그인 기능이 활성화됩니다."
     );
     return;
   }
 
-  const { data, error } = await supabaseClient.rpc("skin_journal_get_session", {
-    p_token: currentSessionToken,
-  });
+  let data = null;
+  let error = null;
+
+  try {
+    ({ data, error } = await supabaseClient.rpc("skin_journal_get_session", {
+      p_token: currentSessionToken,
+    }));
+  } catch (requestError) {
+    currentSessionToken = "";
+    currentUser = null;
+    localStorage.removeItem(SESSION_STORAGE_KEY);
+    updateAuthUI();
+    setAuthMessage(`Supabase 연결 실패: ${requestError.message}. 로컬 계정으로 다시 로그인할 수 있어요.`, "error");
+    return;
+  }
 
   if (error || !data) {
     currentSessionToken = "";

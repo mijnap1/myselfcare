@@ -83,10 +83,16 @@
 
   .auth-card {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "copy"
+      "tabs"
+      "form"
+      "reset"
+      "message";
   }
 
   .auth-tabs {
-    justify-self: start;
+    justify-self: stretch;
   }
 
   .section-header {
@@ -98,7 +104,7 @@
   .view-tabs {
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .view-tab {
@@ -158,12 +164,12 @@
   }
 
   .summary-overview {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     align-items: flex-start;
   }
 
-  .summary-stats {
-    grid-template-columns: 1fr;
+  .summary-progress-card {
+    justify-self: stretch;
   }
 
   .mobile-cards {
@@ -191,7 +197,7 @@
 
   .card,
   .routine-mobile-card {
-    border-radius: 22px;
+    border-radius: 16px;
   }
 
   .hero,
@@ -209,6 +215,11 @@
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
+  }
+
+  .auth-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-items: stretch;
   }
 
   #skinViewTab,
@@ -261,16 +272,14 @@
   }
 
   .mobile-card-actions {
-    width: 100%;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 44px 44px;
+    grid-template-columns: 44px 44px;
     align-items: center;
   }
 
   .mobile-done-toggle {
-    flex: 1;
-    justify-content: space-between;
-    min-width: 0;
+    width: 100%;
+    justify-content: center;
   }
 
   .sidebar h2,
@@ -291,21 +300,12 @@
     font-size: 1.25rem;
   }
 
-  .summary-progress-ring {
-    width: 82px;
-    height: 82px;
-  }
-
-  .summary-stats {
+  .summary-meta {
     gap: 8px;
   }
 
-  .summary-stat {
-    padding: 12px;
-  }
-
-  .summary-stat strong {
-    font-size: 1rem;
+  .summary-meta span {
+    width: 100%;
   }
 
   .mood-picker {
@@ -369,6 +369,7 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .product-status-control,
   .style-category-control {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -420,7 +421,7 @@
   .undo-toast {
     bottom: max(14px, env(safe-area-inset-bottom));
     width: calc(100% - 24px);
-    border-radius: 22px;
+    border-radius: 16px;
     align-items: stretch;
   }
 
