@@ -3,12 +3,13 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: center;
   justify-content: center;
-  width: min(100%, 920px);
+  width: min(100%, 760px);
   gap: 4px;
   padding: 4px;
   border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  background: var(--panel-2);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--panel-solid) 70%, transparent);
+  backdrop-filter: blur(16px);
   margin: 0 auto 18px;
 }
 
@@ -32,11 +33,13 @@
   min-height: 44px;
   padding: 0 16px;
   border: 0;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   background: transparent;
   color: var(--muted);
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  font-weight: 800;
+  transition: background-color var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out),
+    transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out);
 }
 
 .view-tab:hover,
@@ -49,7 +52,7 @@
 .view-tab.is-active {
   background: var(--panel);
   color: var(--text);
-  box-shadow: 0 1px 2px rgba(17, 20, 24, 0.08);
+  box-shadow: 0 10px 24px rgba(41, 37, 36, 0.08);
 }
 
 .skin-subtabs,
@@ -82,12 +85,12 @@
   min-height: 38px;
   padding: 0 12px;
   border: 0;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   background: transparent;
   color: var(--muted);
   cursor: pointer;
-  transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease,
-    transform 0.15s ease;
+  transition: background-color var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out),
+    transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out);
 }
 
 .skin-subtab:hover,
@@ -103,7 +106,7 @@
 .body-subtab.is-active {
   background: var(--panel);
   color: var(--text);
-  box-shadow: 0 1px 2px rgba(17, 20, 24, 0.08);
+  box-shadow: 0 10px 24px rgba(41, 37, 36, 0.08);
 }
 
 .skin-subtab-dot,
@@ -144,7 +147,7 @@
 .skin-product-form-card,
 .style-hero,
 .style-card {
-  padding: 20px;
+  padding: 22px;
 }
 
 .skin-product-form {
@@ -169,7 +172,7 @@
 
 .skin-product-field span {
   color: var(--muted);
-  font-family: "Red Hat Mono", ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -181,7 +184,7 @@
   width: 100%;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
-  background: var(--panel);
+  background: var(--panel-solid);
   color: var(--text);
   font: inherit;
   padding: 0 14px;
@@ -211,8 +214,8 @@
   gap: 4px;
   padding: 4px;
   border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  background: var(--panel-2);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--panel-solid) 70%, transparent);
 }
 
 .product-status-button {
@@ -224,7 +227,8 @@
   color: var(--text-soft);
   font: inherit;
   cursor: pointer;
-  transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+  transition: background-color var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out),
+    transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out);
 }
 
 .product-status-button:hover,
@@ -237,7 +241,7 @@
 .product-status-button.is-active {
   background: var(--panel);
   color: var(--text);
-  box-shadow: 0 1px 2px rgba(17, 20, 24, 0.08);
+  box-shadow: 0 10px 24px rgba(41, 37, 36, 0.08);
 }
 
 .skin-type-selector {
@@ -247,8 +251,8 @@
   margin-top: 16px;
   padding: 4px;
   border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  background: var(--panel-2);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--panel-solid) 70%, transparent);
 }
 
 .skin-type-button {
@@ -262,10 +266,10 @@
   background: transparent;
   color: var(--muted);
   font: inherit;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
-  transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease,
-    transform 0.15s ease;
+  transition: background-color var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out),
+    transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out);
 }
 
 .skin-type-button:hover,
@@ -278,7 +282,7 @@
 .skin-type-button.is-active {
   background: var(--panel);
   color: var(--text);
-  box-shadow: 0 1px 2px rgba(17, 20, 24, 0.08);
+  box-shadow: 0 10px 24px rgba(41, 37, 36, 0.08);
 }
 
 .skin-season-board-wrap {
@@ -312,11 +316,11 @@
   place-items: center;
   min-height: 118px;
   padding: 18px;
-  background: #0f1114;
-  color: white;
+  background: var(--text);
+  color: var(--bg);
   font-size: 1.05rem;
   font-weight: 800;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
   text-align: center;
 }
 
@@ -326,9 +330,9 @@
   justify-content: center;
   gap: 10px;
   min-height: 118px;
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: 2.5rem;
   font-weight: 900;
-  letter-spacing: -0.05em;
+  letter-spacing: 0;
 }
 
 .skin-season-header ion-icon {
@@ -372,7 +376,7 @@
   min-height: 34px;
   padding: 0 10px;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   background: var(--panel);
   color: var(--muted);
   font: inherit;
@@ -389,7 +393,7 @@
   gap: 10px;
   padding: 12px;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   background: var(--panel);
 }
 
@@ -397,7 +401,7 @@
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   border: 1px solid var(--line);
 }
 
@@ -434,7 +438,7 @@
 .skin-product-target {
   margin: 0;
   color: var(--text);
-  font-family: "Red Hat Mono", ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -453,7 +457,7 @@
   min-height: 170px;
   padding: 16px;
   border: 1px dashed var(--line-strong);
-  border-radius: 18px;
+  border-radius: var(--radius-md);
   background: color-mix(in srgb, var(--panel) 92%, var(--panel-2) 8%);
   cursor: pointer;
 }
@@ -495,7 +499,7 @@
   max-width: 240px;
   aspect-ratio: 1 / 1;
   object-fit: cover;
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   border: 1px solid var(--line);
 }
 
@@ -507,7 +511,7 @@
   min-height: 34px;
   padding: 0 10px;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   background: var(--panel);
   color: var(--text-soft);
   font: inherit;
@@ -517,7 +521,7 @@
 .skin-season-mobile-card {
   padding: 16px;
   border: 1px solid var(--line);
-  border-radius: 20px;
+  border-radius: var(--radius-md);
   background: color-mix(in srgb, var(--panel) 94%, var(--panel-2) 6%);
 }
 
@@ -539,7 +543,7 @@
   gap: 10px;
   font-size: 1.65rem;
   font-weight: 900;
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
 }
 
 .skin-season-mobile-title ion-icon {
@@ -569,7 +573,7 @@
   min-height: 34px;
   padding: 0 10px;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   background: var(--panel);
   color: var(--muted);
   font: inherit;
@@ -602,7 +606,7 @@
 .body-hero-stat {
   padding: 14px;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   background: color-mix(in srgb, var(--panel) 92%, var(--panel-2) 8%);
 }
 
@@ -622,7 +626,7 @@
 .body-hero-stat.is-primary strong {
   font-size: 2rem;
   font-weight: 900;
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
 }
 
 .body-hero-stat.is-primary .summary-stat-label {
@@ -663,7 +667,7 @@
 
 .body-field span {
   color: var(--muted);
-  font-family: "Red Hat Mono", ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -675,7 +679,7 @@
   width: 100%;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
-  background: var(--panel);
+  background: var(--panel-solid);
   color: var(--text);
   padding: 0 14px;
 }
@@ -690,8 +694,8 @@
   gap: 4px;
   padding: 4px;
   border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  background: var(--panel-2);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--panel-solid) 70%, transparent);
 }
 
 .body-segment-button {
@@ -703,8 +707,8 @@
   font: inherit;
   font-weight: 600;
   cursor: pointer;
-  transition: border-color 0.15s ease, background-color 0.15s ease,
-    color 0.15s ease, transform 0.15s ease;
+  transition: background-color var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out),
+    transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out);
 }
 
 .body-segment-button:hover,
@@ -717,7 +721,7 @@
 .body-segment-button.is-active {
   background: var(--panel);
   color: var(--text);
-  box-shadow: 0 1px 2px rgba(17, 20, 24, 0.08);
+  box-shadow: 0 10px 24px rgba(41, 37, 36, 0.08);
 }
 
 .body-date-picker {
@@ -739,7 +743,7 @@
   width: 34px;
   height: 34px;
   border: 0;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   background: transparent;
   color: var(--text-soft);
   cursor: pointer;
@@ -759,8 +763,8 @@
   width: 320px;
   padding: 14px;
   border: 1px solid var(--line);
-  border-radius: 18px;
-  background: var(--panel);
+  border-radius: var(--radius-lg);
+  background: var(--panel-solid);
   box-shadow: var(--shadow);
   z-index: 30;
 }
@@ -785,7 +789,7 @@
   width: 36px;
   height: 36px;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: var(--panel);
   color: var(--text-soft);
   cursor: pointer;
@@ -804,7 +808,7 @@
 
 .body-calendar-weekdays span {
   color: var(--muted);
-  font-family: "Red Hat Mono", ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 0.68rem;
   text-align: center;
   text-transform: uppercase;
@@ -813,7 +817,7 @@
 .body-calendar-day {
   min-height: 38px;
   border: 1px solid transparent;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: transparent;
   color: var(--text);
   cursor: pointer;
@@ -890,7 +894,7 @@
 
 .body-chart-target-label {
   fill: var(--muted);
-  font-family: "Red Hat Mono", ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.04em;
 }
@@ -903,7 +907,7 @@
 
 .body-chart-label {
   fill: var(--muted);
-  font-family: "Red Hat Mono", ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
 }
 
@@ -925,13 +929,13 @@
   align-items: center;
   padding: 14px;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   background: color-mix(in srgb, var(--panel) 92%, var(--panel-2) 8%);
 }
 
 .body-history-date {
   color: var(--muted);
-  font-family: "Red Hat Mono", ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 0.74rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -952,7 +956,7 @@
   min-height: 36px;
   padding: 0 12px;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   background: transparent;
   color: var(--muted);
   cursor: pointer;
@@ -977,8 +981,8 @@
   gap: 4px;
   padding: 4px;
   border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  background: var(--panel-2);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--panel-solid) 70%, transparent);
 }
 
 .body-part-button {
@@ -994,8 +998,8 @@
   font: inherit;
   font-weight: 700;
   cursor: pointer;
-  transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease,
-    transform 0.15s ease;
+  transition: background-color var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out),
+    transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out);
 }
 
 .body-part-button:hover,
@@ -1008,7 +1012,7 @@
 .body-part-button.is-active {
   background: var(--panel);
   color: var(--text);
-  box-shadow: 0 1px 2px rgba(17, 20, 24, 0.08);
+  box-shadow: 0 10px 24px rgba(41, 37, 36, 0.08);
 }
 
 .body-workout-image-zone {
@@ -1018,7 +1022,7 @@
   min-height: 170px;
   padding: 16px;
   border: 1px dashed var(--line-strong);
-  border-radius: 18px;
+  border-radius: var(--radius-md);
   background: color-mix(in srgb, var(--panel) 92%, var(--panel-2) 8%);
   cursor: pointer;
 }
@@ -1061,7 +1065,7 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--radius-md);
 }
 
 .body-workout-list {
@@ -1076,7 +1080,7 @@
   align-items: flex-start;
   padding: 16px;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: var(--radius-md);
   background: color-mix(in srgb, var(--panel) 92%, var(--panel-2) 8%);
 }
 
@@ -1117,13 +1121,13 @@
   margin: 0;
   font-size: 1.22rem;
   font-weight: 900;
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
 }
 
 .body-workout-group-head span {
   margin-left: auto;
   color: var(--muted);
-  font-family: "Red Hat Mono", ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 0.78rem;
   font-weight: 700;
 }
@@ -1140,7 +1144,7 @@
   align-items: center;
   padding: 12px;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: var(--radius-md);
   background: color-mix(in srgb, var(--panel) 92%, var(--panel-2) 8%);
 }
 
@@ -1174,7 +1178,7 @@
   aspect-ratio: 1 / 1;
   object-fit: cover;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: var(--radius-sm);
 }
 
 .body-workout-item-copy {
@@ -1222,8 +1226,8 @@
   gap: 4px;
   padding: 4px;
   border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  background: var(--panel-2);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--panel-solid) 70%, transparent);
 }
 
 .style-category-button {
@@ -1239,8 +1243,8 @@
   font: inherit;
   font-weight: 700;
   cursor: pointer;
-  transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease,
-    transform 0.15s ease;
+  transition: background-color var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out),
+    transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out);
 }
 
 .style-category-button:hover,
@@ -1253,7 +1257,7 @@
 .style-category-button.is-active {
   background: var(--panel);
   color: var(--text);
-  box-shadow: 0 1px 2px rgba(17, 20, 24, 0.08);
+  box-shadow: 0 10px 24px rgba(41, 37, 36, 0.08);
 }
 
 .style-image-zone {
@@ -1263,7 +1267,7 @@
   min-height: 190px;
   padding: 16px;
   border: 1px dashed var(--line-strong);
-  border-radius: 18px;
+  border-radius: var(--radius-md);
   background: color-mix(in srgb, var(--panel) 92%, var(--panel-2) 8%);
   cursor: pointer;
 }
@@ -1306,7 +1310,7 @@
   aspect-ratio: 4 / 5;
   object-fit: cover;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--radius-md);
 }
 
 .style-list {
@@ -1321,7 +1325,7 @@
   align-items: flex-start;
   padding: 16px;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: var(--radius-md);
   background: color-mix(in srgb, var(--panel) 92%, var(--panel-2) 8%);
 }
 
@@ -1361,13 +1365,13 @@
   margin: 0;
   font-size: 1.22rem;
   font-weight: 900;
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
 }
 
 .style-group-head span {
   margin-left: auto;
   color: var(--muted);
-  font-family: "Red Hat Mono", ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 0.78rem;
   font-weight: 700;
 }
@@ -1384,7 +1388,7 @@
   align-items: center;
   padding: 12px;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: var(--radius-md);
   background: color-mix(in srgb, var(--panel) 92%, var(--panel-2) 8%);
 }
 
@@ -1397,7 +1401,7 @@
   aspect-ratio: 4 / 5;
   object-fit: cover;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: var(--radius-sm);
 }
 
 .style-item-copy {
@@ -1461,7 +1465,7 @@
   margin: 0;
   min-width: 120px;
   color: var(--text-soft);
-  font-family: "Red Hat Mono", ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -1527,7 +1531,7 @@
 
 .skin-video-field span {
   color: var(--muted);
-  font-family: "Red Hat Mono", ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -1538,12 +1542,12 @@
 .skin-video-field textarea {
   width: 100%;
   border: 1px solid var(--line);
-  border-radius: 18px;
-  background: color-mix(in srgb, var(--panel) 92%, var(--panel-2) 8%);
+  border-radius: var(--radius-sm);
+  background: var(--panel-solid);
   color: var(--text);
   font: inherit;
   padding: 14px 16px;
-  transition: border-color 0.15s ease, background-color 0.15s ease;
+  transition: border-color var(--motion-fast) var(--ease-out), background-color var(--motion-fast) var(--ease-out);
 }
 
 .skin-video-field textarea {
@@ -1569,7 +1573,7 @@
   gap: 18px;
   padding: 16px;
   border: 1px solid var(--line);
-  border-radius: 22px;
+  border-radius: var(--radius-lg);
   background: color-mix(in srgb, var(--panel) 90%, var(--panel-2) 10%);
 }
 
@@ -1577,7 +1581,7 @@
 .skin-video-card-frame {
   position: relative;
   overflow: hidden;
-  border-radius: 18px;
+  border-radius: var(--radius-md);
   background: var(--panel-2);
 }
 
@@ -1667,7 +1671,7 @@
   align-items: flex-start;
   padding: 18px;
   border: 1px dashed var(--line);
-  border-radius: 20px;
+  border-radius: var(--radius-md);
   color: var(--text-soft);
 }
 
@@ -1700,7 +1704,7 @@
 .summary-stat-label {
   margin: 0;
   color: var(--muted);
-  font-family: "Red Hat Mono", ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -1738,7 +1742,7 @@
 
 .summary-progress-card span {
   color: var(--muted);
-  font-family: "Red Hat Mono", ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 0.62rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1768,7 +1772,7 @@
   position: relative;
   height: 8px;
   overflow: hidden;
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   background: var(--panel-2);
 }
 
@@ -1792,17 +1796,17 @@
   min-height: 40px;
   padding: 0 12px;
   border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--panel);
+  border-radius: var(--radius-sm);
+  background: var(--panel-solid);
   color: var(--text-soft);
   cursor: pointer;
-  transition: transform 0.15s ease, border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+  transition: transform var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out),
+    background-color var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out);
 }
 
 .mood-chip:hover,
 .mood-chip:focus-visible {
   outline: none;
-  transform: translateY(-1px);
   border-color: var(--line-strong);
   background: var(--panel-2);
 }
@@ -1910,10 +1914,10 @@
   height: 26px;
   padding: 0 8px;
   border: 1px solid color-mix(in srgb, var(--yellow-text) 36%, var(--line));
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   background: rgba(255, 255, 255, 0.7);
   color: var(--yellow-text);
-  font-family: "Red Hat Mono", ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 0.66rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -1931,8 +1935,8 @@
   min-height: 92px;
   padding: 12px 14px;
   border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--panel);
+  border-radius: var(--radius-sm);
+  background: var(--panel-solid);
   color: var(--text);
   line-height: 1.65;
   resize: vertical;
@@ -1958,8 +1962,8 @@
   padding: 8px 10px;
   border: 2px solid transparent;
   border-radius: var(--radius-sm);
-  transition: border-color 0.15s ease, background-color 0.15s ease,
-    transform 0.15s ease;
+  transition: border-color var(--motion-fast) var(--ease-out), background-color var(--motion-fast) var(--ease-out),
+    transform var(--motion-fast) var(--ease-out);
 }
 
 .cell-display.has-repeat {
@@ -1975,7 +1979,6 @@
   outline: none;
   border-color: var(--line-strong);
   background: color-mix(in srgb, var(--panel) 94%, var(--text) 6%);
-  transform: translateY(-1px);
 }
 
 .cell-repeat-button {
@@ -1992,8 +1995,8 @@
   color: var(--muted);
   cursor: pointer;
   opacity: 0.72;
-  transition: opacity 0.15s ease, background-color 0.15s ease, color 0.15s ease,
-    border-color 0.15s ease;
+  transition: opacity var(--motion-fast) var(--ease-out), background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out);
 }
 
 .cell-repeat-button:hover,
@@ -2112,7 +2115,7 @@
   top: 0.7em;
   width: 6px;
   height: 6px;
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   background: var(--gray-accent);
 }
 
@@ -2225,7 +2228,7 @@
   top: 0.75em;
   width: 6px;
   height: 6px;
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   background: var(--gray-accent);
 }
 
@@ -2279,7 +2282,7 @@
 .mobile-day {
   font-size: 1.12rem;
   font-weight: 800;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
 }
 
 .mobile-weekday {
@@ -2308,7 +2311,7 @@
 .mobile-summary-dot {
   width: 4px;
   height: 4px;
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   background: currentColor;
 }
 
@@ -2337,11 +2340,11 @@
   width: 40px;
   height: 40px;
   border: 1px solid var(--line-strong);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: var(--panel);
   color: var(--text-soft);
-  transition: background-color 0.15s ease, color 0.15s ease,
-    transform 0.15s ease;
+  transition: background-color var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out),
+    transform var(--motion-fast) var(--ease-out);
 }
 
 .mobile-icon-button:hover,
@@ -2349,7 +2352,6 @@
   outline: none;
   background: var(--panel-2);
   color: var(--text);
-  transform: translateY(-1px);
 }
 
 .mobile-card-body {
@@ -2367,7 +2369,7 @@
 .mobile-field {
   padding: 12px;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   background: var(--panel-2);
 }
 
@@ -2425,13 +2427,13 @@
   width: min(92vw, 430px);
   padding: 10px 10px 10px 14px;
   border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--panel) 92%, transparent);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--panel-solid) 92%, transparent);
   color: var(--text);
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
   opacity: 0;
   transform: translate(-50%, 14px);
-  transition: opacity 0.18s ease, transform 0.18s ease;
+  transition: opacity var(--motion-medium) var(--ease-out), transform var(--motion-medium) var(--ease-out);
   backdrop-filter: blur(18px);
 }
 
@@ -2472,7 +2474,7 @@
 .undo-toast-action {
   min-height: 36px;
   padding: 0 15px;
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
 }
 
 .undo-toast-close {
@@ -2481,7 +2483,7 @@
   justify-content: center;
   width: 36px;
   height: 36px;
-  border-radius: 50%;
+  border-radius: var(--radius-sm);
 }
 
 .undo-toast-action:hover,
@@ -2490,4 +2492,57 @@
 .undo-toast-close:focus-visible {
   outline: none;
   border-color: var(--text-soft);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .view-tab:hover,
+  .skin-subtab:hover,
+  .body-subtab:hover,
+  .product-status-button:hover,
+  .skin-type-button:hover,
+  .body-segment-button:hover,
+  .body-part-button:hover,
+  .style-category-button:hover,
+  .mood-chip:hover,
+  .cell-display.is-editable:hover,
+  .mobile-icon-button:hover {
+    transform: translateY(-1px);
+  }
+
+  .view-tab:hover ion-icon,
+  .skin-subtab:hover ion-icon,
+  .body-subtab:hover ion-icon,
+  .mood-chip:hover ion-icon,
+  .mobile-icon-button:hover ion-icon {
+    transform: translateY(-1px) scale(1.06);
+  }
+
+  .cell-repeat-button:hover ion-icon {
+    transform: rotate(120deg);
+  }
+
+  .undo-toast.is-visible .undo-toast-copy ion-icon {
+    animation: icon-spin-in 260ms var(--ease-out) both;
+  }
+
+  .week-nav-button:first-child:hover ion-icon {
+    transform: translateX(-3px);
+  }
+
+  .week-nav-button:last-child:hover ion-icon {
+    transform: translateX(3px);
+  }
+
+  .skin-video-link-button:hover ion-icon,
+  .body-workout-link:hover ion-icon,
+  .style-item-link:hover ion-icon {
+    transform: translateX(3px);
+  }
+}
+
+@keyframes icon-spin-in {
+  from {
+    opacity: 0.35;
+    transform: rotate(-32deg) scale(0.88);
+  }
 }

@@ -21,6 +21,10 @@
     padding: 24px;
   }
 
+  h1 {
+    font-size: 4.75rem;
+  }
+
   .skin-video-form-grid,
   .skin-video-preview,
   .skin-video-card,
@@ -197,7 +201,7 @@
 
   .card,
   .routine-mobile-card {
-    border-radius: 16px;
+    border-radius: var(--radius-xl);
   }
 
   .hero,
@@ -421,7 +425,7 @@
   .undo-toast {
     bottom: max(14px, env(safe-area-inset-bottom));
     width: calc(100% - 24px);
-    border-radius: 16px;
+    border-radius: var(--radius-xl);
     align-items: stretch;
   }
 
