@@ -1,61 +1,63 @@
 :root {
-  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  --bg: #fff7ed;
-  --bg-soft: #fffaf4;
-  --panel: rgba(255, 252, 247, 0.92);
-  --panel-solid: #fffcf7;
-  --panel-2: rgba(41, 37, 36, 0.045);
-  --text: #292524;
-  --text-soft: #57534e;
-  --muted: #8d8881;
-  --line: rgba(41, 37, 36, 0.1);
-  --line-strong: rgba(41, 37, 36, 0.18);
-  --shadow: 0 18px 44px rgba(41, 37, 36, 0.08);
-  --blue: #111418;
-  --blue-deep: #111418;
-  --green: #111418;
-  --green-deep: #111418;
-  --purple: #111418;
-  --purple-deep: #111418;
-  --gray-accent: #78716c;
-  --yellow-bg: rgba(249, 115, 22, 0.12);
-  --yellow-text: #c2410c;
-  --focus-ring: #f0abfc;
+  --font-sans: "Plus Jakarta Sans", "Noto Sans KR", "Apple SD Gothic Neo", ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "Plus Jakarta Sans", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    monospace;
+  --bg: #f6f7fb;
+  --bg-soft: #edf5f2;
+  --panel: rgba(255, 255, 255, 0.84);
+  --panel-solid: #ffffff;
+  --panel-2: rgba(95, 126, 111, 0.08);
+  --text: #1d2430;
+  --text-soft: #515b68;
+  --muted: #7f8792;
+  --line: rgba(29, 36, 48, 0.1);
+  --line-strong: rgba(29, 36, 48, 0.18);
+  --shadow: 0 18px 48px rgba(29, 36, 48, 0.08);
+  --blue: #647aa3;
+  --blue-deep: #4c6085;
+  --green: #5f8f7b;
+  --green-deep: #416f5f;
+  --purple: #9b7890;
+  --purple-deep: #77576d;
+  --gray-accent: #6c7682;
+  --yellow-bg: rgba(201, 117, 93, 0.12);
+  --yellow-text: #b85f49;
+  --focus-ring: #84b7a8;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --motion-fast: 150ms;
   --motion-medium: 220ms;
   --danger: #ef4444;
   --success: #16a34a;
-  --radius-xl: 16px;
-  --radius-lg: 16px;
-  --radius-md: 12px;
-  --radius-sm: 8px;
+  --radius-xl: 8px;
+  --radius-lg: 8px;
+  --radius-md: 8px;
+  --radius-sm: 6px;
 }
 
 [data-theme="dark"] {
-  --bg: #1c1917;
-  --bg-soft: #292524;
-  --panel: rgba(28, 25, 23, 0.82);
-  --panel-solid: #1c1917;
-  --panel-2: rgba(255, 247, 237, 0.055);
-  --text: #fff7ed;
-  --text-soft: rgba(255, 247, 237, 0.74);
-  --muted: rgba(255, 247, 237, 0.48);
-  --line: rgba(255, 247, 237, 0.1);
-  --line-strong: rgba(255, 247, 237, 0.18);
+  --bg: #111723;
+  --bg-soft: #17211f;
+  --panel: rgba(18, 25, 36, 0.84);
+  --panel-solid: #121924;
+  --panel-2: rgba(132, 183, 168, 0.08);
+  --text: #f6f7fb;
+  --text-soft: rgba(246, 247, 251, 0.74);
+  --muted: rgba(246, 247, 251, 0.5);
+  --line: rgba(246, 247, 251, 0.1);
+  --line-strong: rgba(246, 247, 251, 0.18);
   --shadow: 0 24px 64px rgba(0, 0, 0, 0.26);
-  --blue: #fff7ed;
-  --blue-deep: #fff7ed;
-  --green: #fff7ed;
-  --green-deep: #fff7ed;
-  --purple: #fff7ed;
-  --purple-deep: #fff7ed;
-  --gray-accent: rgba(255, 247, 237, 0.55);
-  --yellow-bg: rgba(251, 146, 60, 0.15);
-  --yellow-text: #fdba74;
-  --focus-ring: #f0abfc;
+  --blue: #9aaed2;
+  --blue-deep: #c1cee4;
+  --green: #91c7b7;
+  --green-deep: #b1dbcf;
+  --purple: #c8a3bc;
+  --purple-deep: #dfc3d6;
+  --gray-accent: rgba(246, 247, 251, 0.55);
+  --yellow-bg: rgba(224, 152, 131, 0.16);
+  --yellow-text: #e4a18f;
+  --focus-ring: #91c7b7;
   --danger: #f87171;
   --success: #4ade80;
 }
@@ -78,7 +80,10 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: var(--font-sans);
-  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
+  background:
+    linear-gradient(118deg, rgba(132, 183, 168, 0.12) 0%, transparent 38%),
+    linear-gradient(248deg, rgba(201, 117, 93, 0.1) 0%, transparent 42%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
   color: var(--text);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -110,7 +115,7 @@ ion-icon {
 .page-shell {
   width: min(1280px, calc(100% - 48px));
   margin: 0 auto;
-  padding: 26px 0 56px;
+  padding: 30px 0 calc(128px + env(safe-area-inset-bottom));
 }
 
 .journal-area {
@@ -127,14 +132,14 @@ ion-icon {
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, auto);
   gap: 24px;
-  padding: 18px 0 34px;
-  margin-bottom: 8px;
-  background: transparent;
-  border: 0;
-  box-shadow: none;
-  backdrop-filter: none;
+  overflow: hidden;
+  padding: 28px;
+  margin-bottom: 18px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--panel-solid) 92%, transparent), color-mix(in srgb, var(--panel) 78%, transparent)),
+    linear-gradient(90deg, rgba(132, 183, 168, 0.1), rgba(201, 117, 93, 0.08));
 }
 
 .hero-main {
@@ -158,7 +163,15 @@ ion-icon {
   border-radius: var(--radius-md);
   border: 1px solid var(--line);
   background: var(--text);
-  color: var(--bg);
+  color: white;
+  box-shadow: 0 14px 30px rgba(29, 36, 48, 0.16);
+}
+
+[data-theme="dark"] .app-mark {
+  border-color: var(--line-strong);
+  background: color-mix(in srgb, var(--panel-solid) 82%, var(--green) 18%);
+  color: var(--green-deep);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.24);
 }
 
 .eyebrow,
@@ -192,7 +205,7 @@ h3 {
 }
 
 h1 {
-  font-size: 6.5rem;
+  font-size: 5.5rem;
   line-height: 0.95;
 }
 
@@ -218,7 +231,8 @@ mark::after {
   right: 0.02em;
   bottom: 0.05em;
   height: 0.22em;
-  background: var(--focus-ring);
+  background: color-mix(in srgb, var(--yellow-text) 26%, transparent);
+  opacity: 1;
 }
 
 h3 {
@@ -236,7 +250,7 @@ h3 {
 .hero-copy {
   margin-top: 18px;
   max-width: 40rem;
-  font-size: 1.04rem;
+  font-size: 1.02rem;
   line-height: 1.7;
 }
 
@@ -587,7 +601,7 @@ h3 {
 .auth-tab.is-active {
   background: var(--panel);
   color: var(--text);
-  box-shadow: 0 10px 24px rgba(41, 37, 36, 0.08);
+  box-shadow: 0 10px 24px rgba(29, 36, 48, 0.08);
 }
 
 .auth-tab:hover,
@@ -679,6 +693,7 @@ h3 {
 .app-content {
   display: grid;
   gap: 16px;
+  padding-bottom: 10px;
   animation: enter-lift 260ms var(--ease-out) 180ms backwards;
 }
 
