@@ -1,16 +1,22 @@
 .view-tabs {
+  position: fixed;
+  left: 50%;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  z-index: 40;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: center;
   justify-content: center;
-  width: min(100%, 760px);
-  gap: 4px;
-  padding: 4px;
+  width: min(calc(100% - 32px), 760px);
+  gap: 6px;
+  padding: 8px;
   border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: color-mix(in srgb, var(--panel-solid) 70%, transparent);
-  backdrop-filter: blur(16px);
-  margin: 0 auto 18px;
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--panel-solid) 88%, transparent);
+  box-shadow: 0 22px 60px rgba(29, 36, 48, 0.14);
+  transform: translateX(-50%);
+  backdrop-filter: blur(22px) saturate(1.05);
+  -webkit-backdrop-filter: blur(22px) saturate(1.05);
 }
 
 #skinViewTab {
@@ -29,17 +35,22 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-height: 44px;
+  gap: 9px;
+  min-height: 52px;
   padding: 0 16px;
   border: 0;
-  border-radius: var(--radius-md);
+  border-radius: 16px;
   background: transparent;
   color: var(--muted);
   cursor: pointer;
   font-weight: 800;
+  letter-spacing: 0;
   transition: background-color var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out),
     transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out);
+}
+
+.view-tab ion-icon {
+  font-size: 1.18rem;
 }
 
 .view-tab:hover,
@@ -50,9 +61,24 @@
 }
 
 .view-tab.is-active {
-  background: var(--panel);
-  color: var(--text);
-  box-shadow: 0 10px 24px rgba(41, 37, 36, 0.08);
+  background: var(--text);
+  color: var(--panel-solid);
+  box-shadow: 0 12px 28px rgba(29, 36, 48, 0.18);
+}
+
+#skinViewTab.is-active {
+  background: var(--green-deep);
+  color: white;
+}
+
+#bodyViewTab.is-active {
+  background: #9c6558;
+  color: white;
+}
+
+#styleViewTab.is-active {
+  background: var(--blue-deep);
+  color: white;
 }
 
 .skin-subtabs,
@@ -61,11 +87,11 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-column: 1 / -1;
   order: 4;
-  gap: 4px;
+  gap: 6px;
   align-items: center;
   justify-content: center;
-  margin-top: 0;
-  padding-top: 4px;
+  margin-top: 2px;
+  padding-top: 8px;
   border-top: 1px solid var(--line);
 }
 
@@ -82,12 +108,13 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 38px;
+  min-height: 40px;
   padding: 0 12px;
   border: 0;
-  border-radius: var(--radius-md);
+  border-radius: 14px;
   background: transparent;
   color: var(--muted);
+  font-weight: 800;
   cursor: pointer;
   transition: background-color var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out),
     transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out);
@@ -104,14 +131,19 @@
 
 .skin-subtab.is-active,
 .body-subtab.is-active {
-  background: var(--panel);
+  background: color-mix(in srgb, var(--panel-solid) 68%, var(--panel-2));
   color: var(--text);
-  box-shadow: 0 10px 24px rgba(41, 37, 36, 0.08);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 8%, transparent);
 }
 
 .skin-subtab-dot,
 .body-subtab-dot {
-  display: none;
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.55;
 }
 
 .layout-section {
@@ -241,7 +273,7 @@
 .product-status-button.is-active {
   background: var(--panel);
   color: var(--text);
-  box-shadow: 0 10px 24px rgba(41, 37, 36, 0.08);
+  box-shadow: 0 10px 24px rgba(29, 36, 48, 0.08);
 }
 
 .skin-type-selector {
@@ -282,7 +314,7 @@
 .skin-type-button.is-active {
   background: var(--panel);
   color: var(--text);
-  box-shadow: 0 10px 24px rgba(41, 37, 36, 0.08);
+  box-shadow: 0 10px 24px rgba(29, 36, 48, 0.08);
 }
 
 .skin-season-board-wrap {
@@ -340,19 +372,19 @@
 }
 
 .skin-season-header:nth-child(2) ion-icon {
-  color: #7ecb4f;
+  color: #7eae96;
 }
 
 .skin-season-header:nth-child(3) ion-icon {
-  color: #f3be3e;
+  color: #d4a35f;
 }
 
 .skin-season-header:nth-child(4) ion-icon {
-  color: #b8723a;
+  color: #b67868;
 }
 
 .skin-season-header:nth-child(5) ion-icon {
-  color: #73bdf6;
+  color: #86a8c8;
 }
 
 .skin-season-cell {
@@ -551,19 +583,19 @@
 }
 
 .skin-season-mobile-card:nth-child(1) .skin-season-mobile-title ion-icon {
-  color: #7ecb4f;
+  color: #7eae96;
 }
 
 .skin-season-mobile-card:nth-child(2) .skin-season-mobile-title ion-icon {
-  color: #f3be3e;
+  color: #d4a35f;
 }
 
 .skin-season-mobile-card:nth-child(3) .skin-season-mobile-title ion-icon {
-  color: #b8723a;
+  color: #b67868;
 }
 
 .skin-season-mobile-card:nth-child(4) .skin-season-mobile-title ion-icon {
-  color: #73bdf6;
+  color: #86a8c8;
 }
 
 .skin-season-mobile-add {
@@ -640,9 +672,16 @@
 }
 
 .body-grid {
+  position: relative;
+  z-index: 10;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
+}
+
+.body-grid + .body-card {
+  position: relative;
+  z-index: 1;
 }
 
 .body-card-head h2 {
@@ -656,8 +695,14 @@
 }
 
 .body-entry-form {
+  position: relative;
   display: grid;
   gap: 14px;
+}
+
+.body-entry-form > .body-fields {
+  position: relative;
+  z-index: 2;
 }
 
 .body-field {
@@ -721,11 +766,12 @@
 .body-segment-button.is-active {
   background: var(--panel);
   color: var(--text);
-  box-shadow: 0 10px 24px rgba(41, 37, 36, 0.08);
+  box-shadow: 0 10px 24px rgba(29, 36, 48, 0.08);
 }
 
 .body-date-picker {
   position: relative;
+  z-index: 5;
 }
 
 .body-date-picker input {
@@ -759,14 +805,14 @@
 .body-calendar-panel {
   position: absolute;
   top: calc(100% + 10px);
-  left: 0;
-  width: 320px;
-  padding: 14px;
+  right: 0;
+  width: min(320px, calc(100vw - 32px));
+  padding: 12px;
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: var(--panel-solid);
-  box-shadow: var(--shadow);
-  z-index: 30;
+  box-shadow: 0 22px 58px rgba(29, 36, 48, 0.18);
+  z-index: 80;
 }
 
 .body-calendar-head {
@@ -799,7 +845,7 @@
 .body-calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 6px;
+  gap: 5px;
 }
 
 .body-calendar-weekdays {
@@ -815,12 +861,14 @@
 }
 
 .body-calendar-day {
-  min-height: 38px;
+  min-width: 0;
+  min-height: 36px;
   border: 1px solid transparent;
   border-radius: var(--radius-md);
   background: transparent;
   color: var(--text);
   cursor: pointer;
+  font-weight: 600;
 }
 
 .body-calendar-day:hover,
@@ -859,7 +907,9 @@
 }
 
 .body-field-note {
+  position: relative;
   grid-column: 1 / -1;
+  z-index: 1;
 }
 
 .body-chart {
@@ -1012,7 +1062,7 @@
 .body-part-button.is-active {
   background: var(--panel);
   color: var(--text);
-  box-shadow: 0 10px 24px rgba(41, 37, 36, 0.08);
+  box-shadow: 0 10px 24px rgba(29, 36, 48, 0.08);
 }
 
 .body-workout-image-zone {
@@ -1257,7 +1307,7 @@
 .style-category-button.is-active {
   background: var(--panel);
   color: var(--text);
-  box-shadow: 0 10px 24px rgba(41, 37, 36, 0.08);
+  box-shadow: 0 10px 24px rgba(29, 36, 48, 0.08);
 }
 
 .style-image-zone {
@@ -1915,7 +1965,7 @@
   padding: 0 8px;
   border: 1px solid color-mix(in srgb, var(--yellow-text) 36%, var(--line));
   border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.72);
   color: var(--yellow-text);
   font-family: var(--font-mono);
   font-size: 0.66rem;
@@ -1925,7 +1975,7 @@
 }
 
 [data-theme="dark"] .today-badge {
-  background: rgba(15, 23, 42, 0.7);
+  background: rgba(18, 25, 36, 0.72);
 }
 
 .editable-cell,
@@ -2419,7 +2469,7 @@
 .undo-toast {
   position: fixed;
   left: 50%;
-  bottom: 22px;
+  bottom: calc(122px + env(safe-area-inset-bottom));
   z-index: 50;
   display: flex;
   align-items: center;
@@ -2545,4 +2595,17 @@
     opacity: 0.35;
     transform: rotate(-32deg) scale(0.88);
   }
+}
+
+.view-tab:active,
+.skin-subtab:active,
+.body-subtab:active,
+.product-status-button:active,
+.skin-type-button:active,
+.body-segment-button:active,
+.body-part-button:active,
+.style-category-button:active,
+.mood-chip:active,
+.mobile-icon-button:active {
+  transform: scale(0.97);
 }

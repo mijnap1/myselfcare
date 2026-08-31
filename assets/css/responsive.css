@@ -13,7 +13,7 @@
   .page-shell {
     width: min(100% - 24px, 920px);
     padding-top: 16px;
-    padding-bottom: 28px;
+    padding-bottom: calc(140px + env(safe-area-inset-bottom));
   }
 
   .hero {
@@ -106,7 +106,7 @@
   }
 
   .view-tabs {
-    width: 100%;
+    width: calc(100% - 24px);
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -213,12 +213,31 @@
   }
 
   .header-buttons,
-  .auth-tabs,
-  .view-tabs {
+  .auth-tabs {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
+  }
+
+  .view-tabs {
+    width: calc(100% - 20px);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+    padding: 6px;
+    border-radius: 18px;
+  }
+
+  .view-tab {
+    min-height: 48px;
+    gap: 5px;
+    padding: 0 8px;
+    border-radius: 14px;
+    font-size: 0.78rem;
+  }
+
+  .view-tab ion-icon {
+    font-size: 1.08rem;
   }
 
   .auth-tabs {
@@ -235,9 +254,17 @@
   .skin-subtabs,
   .body-subtabs {
     order: initial;
-    width: min(100%, 420px);
+    width: 100%;
     justify-content: center;
     margin-inline: auto;
+    padding-top: 6px;
+  }
+
+  .skin-subtab,
+  .body-subtab {
+    min-height: 36px;
+    padding-inline: 8px;
+    font-size: 0.78rem;
   }
 
   .header-buttons {
@@ -414,6 +441,8 @@
   }
 
   .body-calendar-panel {
+    left: 0;
+    right: auto;
     width: min(100%, 320px);
   }
 
@@ -423,7 +452,7 @@
   }
 
   .undo-toast {
-    bottom: max(14px, env(safe-area-inset-bottom));
+    bottom: calc(116px + env(safe-area-inset-bottom));
     width: calc(100% - 24px);
     border-radius: var(--radius-xl);
     align-items: stretch;
@@ -437,6 +466,7 @@
 @media (max-width: 400px) {
   .page-shell {
     width: min(100% - 20px, 400px);
+    padding-bottom: calc(146px + env(safe-area-inset-bottom));
   }
 
   .hero,
