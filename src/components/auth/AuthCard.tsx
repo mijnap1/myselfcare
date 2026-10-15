@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { SegmentIndicator } from "@/components/SegmentIndicator";
 import {
@@ -72,7 +71,6 @@ const ERROR_MESSAGES: Record<string, string> = {
 };
 
 export function AuthCard() {
-  const router = useRouter();
   const [mode, setMode] = useState<AuthMode>("sign-in");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -131,7 +129,7 @@ export function AuthCard() {
         if (error) throw error;
       }
 
-      router.refresh();
+      // AppRoot hears the sign-in through onAuthStateChange and loads the journal.
     } catch (error) {
       const code = error && typeof error === "object" && "code" in error ? String(error.code) : "";
       showError(ERROR_MESSAGES[code] ?? (error instanceof Error ? error.message : "요청을 처리하지 못했어요."));
