@@ -33,13 +33,19 @@ set encrypted_password = extensions.crypt('NEW_PASSWORD', extensions.gen_salt('b
 where email = 'USERNAME@users.jamieryu.com';
 ```
 
-## Deploying (Vercel)
+## Deploying (GitHub Pages)
 
-Import the repo in Vercel and add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` as environment variables.
+The app is a static export (`output: "export"`, `basePath: "/myselfcare"`) served at https://jamieryu.com/myselfcare/.
+
+- `.github/workflows/deploy.yml` builds and publishes on every push to `main`.
+- Settings → Pages → Source must be **GitHub Actions**.
+- Settings → Secrets and variables → Actions → **Variables**: `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` (public values; RLS protects the data).
+
+There is no server: sign-in and data loading happen in the browser (`src/components/AppRoot.tsx`), and the session is kept in localStorage.
 
 ## How it works
 
-- `src/app/page.tsx` reads the session on the server and loads the user's `journal_documents` row.
+- `src/components/AppRoot.tsx` follows the Supabase session in the browser and loads the user's `journal_documents` row.
 - `src/components/journal/useJournalStore.ts` holds the document, applies edits with immer, and autosaves. Each save is conditional on the `version` it loaded, so a stale tab gets the newer copy instead of overwriting it.
 - Images are resized to JPEG in the browser and uploaded to a private bucket under `<user id>/`. Base64 images from the old app are moved there automatically on first load.
 - Styles live in `src/styles/` (unchanged from the static site).

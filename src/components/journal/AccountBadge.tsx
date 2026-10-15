@@ -1,19 +1,17 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { getBrowserSupabase } from "@/lib/supabase/client";
 import { Icon } from "../Icon";
 
 export function AccountBadge({ username, onBeforeSignOut }: { username: string; onBeforeSignOut: () => Promise<void> }) {
-  const router = useRouter();
   const [isSigningOut, setIsSigningOut] = useState(false);
 
   const handleLogout = async () => {
     setIsSigningOut(true);
     await onBeforeSignOut();
+    // AppRoot switches back to the login screen via onAuthStateChange.
     await getBrowserSupabase().auth.signOut();
-    router.refresh();
   };
 
   return (
