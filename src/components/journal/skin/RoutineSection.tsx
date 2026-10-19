@@ -12,7 +12,7 @@ import {
   stripRoutineAccentMarkers,
 } from "@/lib/journal/timeline";
 import { getRepeatedCellKeys } from "@/lib/journal/repeats";
-import type { Mood, RoutineEntry } from "@/lib/journal/types";
+import type { Mood, RoutineEntry, RoutineField } from "@/lib/journal/types";
 import { Icon } from "../../Icon";
 import { useJournal } from "../JournalContext";
 import { GroomingChips } from "./GroomingChips";
@@ -171,6 +171,14 @@ export function RoutineSection({ viewState, onViewStateChange }: RoutineSectionP
   );
 }
 
+const STEP_LABELS: Record<RoutineField, string> = {
+  morning: "Morning",
+  faceRoutine: "Face",
+  eveningCleanse: "Cleanse",
+  skincare: "Skincare",
+  notes: "Notes",
+};
+
 function JournalSummary({ visibleEntries }: { visibleEntries: RoutineEntry[] }) {
   const { data, update } = useJournal();
   const todayIndex = getTodayIndex(data.skinTimeline);
@@ -195,33 +203,52 @@ function JournalSummary({ visibleEntries }: { visibleEntries: RoutineEntry[] }) 
           <p className="summary-text">
             {moodMeta ? `${moodMeta.label} mood selected.` : "오늘 피부 컨디션을 골라두면 기록이 더 쉬워져요."}
           </p>
+          <ol className="today-steps" aria-label="Today's routine steps">
+            {ROUTINE_FIELDS.map((option) => {
+              const filled = Boolean(today[option.field].trim());
+              return (
+                <li key={option.field} className={`today-step${filled ? " is-filled" : ""}`} title={option.label}>
+                  <span className="today-step-icon">
+                    <Icon name={filled ? option.icon.replace("-outline", "") : option.icon} />
+                  </span>
+                  <small>{STEP_LABELS[option.field]}</small>
+                </li>
+              );
+            })}
+          </ol>
+          <div className="summary-meta">
+            <span>
+              <Icon name="checkmark-done-circle-outline" />
+              <span>
+                <strong>
+                  {doneCount}/{visibleEntries.length}
+                </strong>{" "}
+                done this week
+              </span>
+            </span>
+            <span>
+              <Icon name="create-outline" />
+              <span>
+                <strong>{getEntryFilledCount(today)}/{ROUTINE_FIELDS.length}</strong> filled today
+              </span>
+            </span>
+          </div>
+          <div className="mood-picker">
+            {MOOD_OPTIONS.map((option) => (
+              <button
+                key={option.value}
+                className={`mood-chip${today.mood === option.value ? " is-active" : ""}`}
+                type="button"
+                aria-pressed={today.mood === option.value}
+                onClick={() => toggleMood(option.value)}
+              >
+                <Icon name={option.icon} />
+                <span>{option.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
         <StreakCard timeline={data.skinTimeline} weekEntries={visibleEntries} />
-      </div>
-      <div className="summary-meta">
-        <span>
-          <strong>
-            {doneCount}/{visibleEntries.length}
-          </strong>{" "}
-          done this week
-        </span>
-        <span>
-          <strong>{getEntryFilledCount(today)}/{ROUTINE_FIELDS.length}</strong> filled today
-        </span>
-      </div>
-      <div className="mood-picker">
-        {MOOD_OPTIONS.map((option) => (
-          <button
-            key={option.value}
-            className={`mood-chip${today.mood === option.value ? " is-active" : ""}`}
-            type="button"
-            aria-pressed={today.mood === option.value}
-            onClick={() => toggleMood(option.value)}
-          >
-            <Icon name={option.icon} />
-            <span>{option.label}</span>
-          </button>
-        ))}
       </div>
     </section>
   );

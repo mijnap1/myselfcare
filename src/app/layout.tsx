@@ -1,19 +1,30 @@
 import type { Metadata } from "next";
-import { Noto_Sans_KR, Plus_Jakarta_Sans } from "next/font/google";
+import { Courier_Prime, Homemade_Apple, Nanum_Gothic_Coding } from "next/font/google";
 import Script from "next/script";
+import { SkyClock } from "@/components/SkyClock";
 import { THEME_STORAGE_KEY } from "@/lib/journal/constants";
+import { getSkyPeriod } from "@/lib/sky";
 import "./globals.css";
 
-const jakarta = Plus_Jakarta_Sans({
+// Typewriter text, with a monospaced Korean face so Hangul keeps the same rhythm.
+const courier = Courier_Prime({
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
-  variable: "--font-jakarta",
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-courier",
 });
 
-const notoKr = Noto_Sans_KR({
-  weight: ["400", "500", "700", "800"],
-  variable: "--font-noto-kr",
+const nanumCoding = Nanum_Gothic_Coding({
+  weight: ["400", "700"],
+  variable: "--font-nanum-coding",
   preload: false,
+});
+
+// The handwritten "Self" in the title.
+const homemadeApple = Homemade_Apple({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-pen",
 });
 
 export const metadata: Metadata = {
@@ -24,23 +35,24 @@ export const metadata: Metadata = {
   },
 };
 
-// Applies the saved theme before first paint so there's no light/dark flash.
+// Applies the saved theme and the time of day's sky before first paint, so nothing flashes.
 const themeScript = `try{document.documentElement.dataset.theme=localStorage.getItem(${JSON.stringify(
   THEME_STORAGE_KEY
-)})==="light"?"light":"dark"}catch(e){}`;
+)})==="light"?"light":"dark"}catch(e){}document.documentElement.dataset.sky=(${getSkyPeriod.toString()})(new Date().getHours());`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="ko"
       data-theme="dark"
-      className={`${jakarta.variable} ${notoKr.variable}`}
+      className={`${courier.variable} ${nanumCoding.variable} ${homemadeApple.variable}`}
       suppressHydrationWarning
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>
+        <SkyClock />
         {children}
         <Script
           type="module"

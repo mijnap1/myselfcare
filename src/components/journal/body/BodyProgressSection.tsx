@@ -87,11 +87,11 @@ export function BodyProgressSection() {
 
   const latest = body.entries[0];
   const stats = [
-    { label: "Current", value: latest?.weightKg ? `${latest.weightKg} kg` : "—", primary: true },
-    { label: "Height", value: body.heightCm ? `${body.heightCm} cm` : "—" },
-    { label: "Goal", value: body.targetWeightKg ? `${body.targetWeightKg} kg` : "—" },
-    { label: "BMI", value: getBmi(body) || "—" },
-    { label: "Change", value: getWeightChange(body) || "—" },
+    { label: "Current", icon: "scale-outline", value: latest?.weightKg ? `${latest.weightKg} kg` : "—", primary: true },
+    { label: "Height", icon: "resize-outline", value: body.heightCm ? `${body.heightCm} cm` : "—" },
+    { label: "Goal", icon: "flag-outline", value: body.targetWeightKg ? `${body.targetWeightKg} kg` : "—" },
+    { label: "BMI", icon: "pulse-outline", value: getBmi(body) || "—" },
+    { label: "Change", icon: "swap-vertical-outline", value: getWeightChange(body) || "—" },
   ];
 
   const profileInput = (field: ProfileField, label: string, placeholder: string, inputMode: "decimal" | "numeric") => (
@@ -125,6 +125,9 @@ export function BodyProgressSection() {
         <div className="body-hero-grid">
           {stats.map((stat) => (
             <div key={stat.label} className={`body-hero-stat${stat.primary ? " is-primary" : ""}`}>
+              <span className="body-hero-stat-icon">
+                <Icon name={stat.icon} />
+              </span>
               <span className="summary-stat-label">{stat.label}</span>
               <strong>{stat.value}</strong>
             </div>

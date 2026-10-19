@@ -16,12 +16,12 @@ const VIEW_TABS = [
 
 const SUB_TABS = {
   skin: [
-    { value: "routine", label: "Routine" },
-    { value: "products", label: "Products" },
+    { value: "routine", label: "Routine", icon: "calendar-outline" },
+    { value: "products", label: "Products", icon: "flask-outline" },
   ],
   body: [
-    { value: "progress", label: "Progress" },
-    { value: "workouts", label: "운동 메모" },
+    { value: "progress", label: "Progress", icon: "trending-up-outline" },
+    { value: "workouts", label: "운동 · 식단", icon: "restaurant-outline" },
   ],
 } as const;
 
@@ -138,7 +138,7 @@ export function ViewNav({
                       : onBodySectionChange(tab.value as BodySection)
                   }
                 >
-                  <span className={`${subKind}-subtab-dot`} aria-hidden="true" />
+                  <Icon name={tab.icon} />
                   <span>{tab.label}</span>
                 </button>
               );

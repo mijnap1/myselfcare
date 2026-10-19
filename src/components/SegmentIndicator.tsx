@@ -23,10 +23,18 @@ export function SegmentIndicator({ activeKey }: { activeKey: string }) {
         indicator.style.opacity = "0";
         return;
       }
+      // Measured as 0 while its panel was hidden: snap into place instead of growing from the corner.
+      const appearing = indicator.style.width === "0px";
+      if (appearing) {
+        indicator.removeAttribute("data-ready");
+      }
       indicator.style.opacity = "1";
       indicator.style.width = `${active.offsetWidth}px`;
       indicator.style.height = `${active.offsetHeight}px`;
       indicator.style.transform = `translate(${active.offsetLeft}px, ${active.offsetTop}px)`;
+      if (appearing) {
+        requestAnimationFrame(() => indicator.setAttribute("data-ready", ""));
+      }
     };
 
     place();

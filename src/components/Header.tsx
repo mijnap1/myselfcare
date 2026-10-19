@@ -8,9 +8,11 @@ interface HeaderProps {
   /** Extra buttons next to the theme toggle (settings menu). */
   actions?: ReactNode;
   status?: ReactNode;
+  /** Shown under the title in place of the tagline (the signed-in letter). */
+  greeting?: ReactNode;
 }
 
-export function Header({ account, actions, status }: HeaderProps) {
+export function Header({ account, actions, status, greeting }: HeaderProps) {
   return (
     <header className="hero card">
       <div className="hero-main">
@@ -23,9 +25,11 @@ export function Header({ account, actions, status }: HeaderProps) {
         <h1>
           My <mark>Self</mark> Care
         </h1>
-        <p className="hero-copy">
-          스킨, 바디, 스타일 기록을 한곳에 정리하고 내 자기관리 흐름을 가볍게 이어가는 퍼스널 셀프케어 저널.
-        </p>
+        {greeting ?? (
+          <p className="hero-copy">
+            스킨, 바디, 스타일 기록을 한곳에 정리하고 내 자기관리 흐름을 가볍게 이어가는 퍼스널 셀프케어 저널.
+          </p>
+        )}
       </div>
       <div className="hero-actions">
         {account}

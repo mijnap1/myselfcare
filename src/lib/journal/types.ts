@@ -1,5 +1,6 @@
 import type {
   BODY_PARTS,
+  MEAL_TYPES,
   MOOD_OPTIONS,
   PRODUCT_STATUSES,
   ROUTINE_FIELDS,
@@ -12,6 +13,7 @@ export type Season = (typeof SKIN_SEASONS)[number]["value"];
 export type SkinType = (typeof SKIN_TYPES)[number]["value"];
 export type ProductStatus = (typeof PRODUCT_STATUSES)[number]["value"];
 export type BodyPart = (typeof BODY_PARTS)[number]["value"];
+export type MealType = (typeof MEAL_TYPES)[number]["value"];
 export type StyleCategory = (typeof STYLE_CATEGORIES)[number]["value"];
 export type Mood = (typeof MOOD_OPTIONS)[number]["value"];
 export type RoutineField = (typeof ROUTINE_FIELDS)[number]["field"];
@@ -77,6 +79,15 @@ export interface Workout extends ImageRef {
   addedAt: string;
 }
 
+export interface Meal extends ImageRef {
+  id: string;
+  mealType: MealType;
+  title: string;
+  link: string;
+  note: string;
+  addedAt: string;
+}
+
 export interface BodyProgress {
   heightCm: string;
   age: string;
@@ -84,6 +95,7 @@ export interface BodyProgress {
   targetWeightKg: string;
   entries: BodyEntry[];
   workouts: Workout[];
+  meals: Meal[];
 }
 
 export interface SkinVideo {
@@ -138,7 +150,7 @@ export interface JournalData {
   styleBoard: StyleBoard;
 }
 
-export const JOURNAL_PAYLOAD_VERSION = 7;
+export const JOURNAL_PAYLOAD_VERSION = 8;
 
 export interface JournalPayload extends JournalData {
   version: typeof JOURNAL_PAYLOAD_VERSION;
