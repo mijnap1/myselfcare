@@ -50,7 +50,12 @@ export function getSignedImageUrl(path: string): Promise<string> {
 }
 
 function imageHolders(data: JournalData): ImageRef[] {
-  return [...data.skinLibrary.products, ...data.bodyProgress.workouts, ...data.styleBoard.items];
+  return [
+    ...data.skinLibrary.products,
+    ...data.bodyProgress.workouts,
+    ...data.bodyProgress.meals,
+    ...data.styleBoard.items,
+  ];
 }
 
 export function hasInlineImages(data: JournalData): boolean {

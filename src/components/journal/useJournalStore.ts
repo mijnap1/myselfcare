@@ -158,6 +158,7 @@ export function useJournalStore({ userId, initialData, initialVersion }: StoreOp
           const holders: ImageRef[] = [
             ...draft.skinLibrary.products,
             ...draft.bodyProgress.workouts,
+            ...draft.bodyProgress.meals,
             ...draft.styleBoard.items,
           ];
           holders.forEach((item) => {

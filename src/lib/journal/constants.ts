@@ -34,6 +34,13 @@ export const BODY_PARTS = [
   { value: "cardio", label: "유산소", icon: "pulse-outline" },
 ] as const;
 
+export const MEAL_TYPES = [
+  { value: "breakfast", label: "아침", icon: "cafe-outline" },
+  { value: "lunch", label: "점심", icon: "restaurant-outline" },
+  { value: "dinner", label: "저녁", icon: "moon-outline" },
+  { value: "snack", label: "간식", icon: "nutrition-outline" },
+] as const;
+
 export const STYLE_CATEGORIES = [
   { value: "outfit", label: "코디", icon: "shirt-outline" },
   { value: "fragrance", label: "향수", icon: "sparkles-outline" },
@@ -69,5 +76,6 @@ export const THEME_STORAGE_KEY = "my-skin-journal-theme";
 export const ACTIVE_VIEW_KEY = "my-skin-journal-active-view";
 export const ACTIVE_SKIN_SECTION_KEY = "my-skin-journal-active-skin-section";
 export const ACTIVE_BODY_SECTION_KEY = "my-skin-journal-active-body-section";
+export const ACTIVE_BODY_NOTES_KEY = "my-skin-journal-active-body-notes";
 
 export const IMAGE_BUCKET = "journal-images";

@@ -12,8 +12,9 @@ import { extendTimelineTo, getTodayIndex, getWeekStartIndex } from "@/lib/journa
 import type { JournalData } from "@/lib/journal/types";
 import { Header } from "../Header";
 import { BodyProgressSection } from "./body/BodyProgressSection";
-import { WorkoutSection } from "./body/WorkoutSection";
+import { BodyNotesSection } from "./body/BodyNotesSection";
 import { AccountBadge } from "./AccountBadge";
+import { HeroGreeting } from "./HeroGreeting";
 import { JournalContext, type JournalContextValue } from "./JournalContext";
 import { SettingsMenu } from "./SettingsMenu";
 import { ProductShelf } from "./skin/ProductShelf";
@@ -137,6 +138,7 @@ export function JournalApp({ userId, username, initialData, initialVersion }: Jo
           account={<AccountBadge username={username} onBeforeSignOut={flush} />}
           actions={<SettingsMenu onDuplicateWeek={duplicateWeek} onExport={exportJson} onImportFile={importJson} />}
           status={syncStatus}
+          greeting={<HeroGreeting username={username} />}
         />
 
         <main id="appContent" className="app-content">
@@ -163,7 +165,7 @@ export function JournalApp({ userId, username, initialData, initialVersion }: Jo
               <BodyProgressSection />
             </div>
             <section className="body-workout-shell" hidden={bodySection !== "workouts"}>
-              <WorkoutSection />
+              <BodyNotesSection />
             </section>
           </section>
 

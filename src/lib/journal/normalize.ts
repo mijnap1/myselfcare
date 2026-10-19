@@ -1,6 +1,7 @@
 import {
   BODY_PARTS,
   DEFAULT_GROOMING_ITEMS,
+  MEAL_TYPES,
   MOOD_OPTIONS,
   PRODUCT_STATUSES,
   ROUTINE_FIELDS,
@@ -129,6 +130,19 @@ function normalizeBodyData(data: unknown): BodyProgress {
           bodyPart: entry.bodyPart === "arms" ? "biceps" : oneOf(BODY_PARTS, entry.bodyPart, "chest"),
           title: text(entry.title),
           youtubeUrl: text(entry.youtubeUrl),
+          note: text(entry.note),
+          ...imageRef(entry),
+          addedAt: text(entry.addedAt) || new Date().toISOString(),
+        }))
+    ),
+    meals: newestFirst(
+      records(source.meals)
+        .filter((entry) => typeof entry.id === "string")
+        .map((entry) => ({
+          id: entry.id as string,
+          mealType: oneOf(MEAL_TYPES, entry.mealType, "breakfast"),
+          title: text(entry.title),
+          link: text(entry.link),
           note: text(entry.note),
           ...imageRef(entry),
           addedAt: text(entry.addedAt) || new Date().toISOString(),

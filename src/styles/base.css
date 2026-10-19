@@ -1,65 +1,108 @@
 :root {
-  --font-sans: "Plus Jakarta Sans", "Noto Sans KR", "Apple SD Gothic Neo", ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-mono: "Plus Jakarta Sans", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-    monospace;
-  --bg: #f6f7fb;
-  --bg-soft: #edf5f2;
-  --panel: rgba(255, 255, 255, 0.84);
-  --panel-solid: #ffffff;
-  --panel-2: rgba(95, 126, 111, 0.08);
-  --text: #1d2430;
-  --text-soft: #515b68;
-  --muted: #7f8792;
-  --line: rgba(29, 36, 48, 0.1);
-  --line-strong: rgba(29, 36, 48, 0.18);
-  --shadow: 0 18px 48px rgba(29, 36, 48, 0.08);
-  --blue: #647aa3;
-  --blue-deep: #4c6085;
-  --green: #5f8f7b;
-  --green-deep: #416f5f;
-  --purple: #9b7890;
-  --purple-deep: #77576d;
-  --gray-accent: #6c7682;
-  --yellow-bg: rgba(201, 117, 93, 0.12);
-  --yellow-text: #b85f49;
-  --focus-ring: #84b7a8;
+  /* Typewriter text everywhere; small UI labels in a plain mono; a pen for "Self" in the title. */
+  --font-sans: var(--font-courier), var(--font-nanum-coding), "Courier New", ui-monospace, monospace;
+  --font-mono: ui-monospace, "SF Mono", Menlo, var(--font-nanum-coding), monospace;
+  --font-signature: var(--font-pen), cursive;
+  /* Ink on a frosted sky: no brand color, just the letter's ink and its tints. */
+  --bg: #6ca6c8;
+  --panel: rgba(255, 255, 255, 0.5);
+  --panel-solid: rgba(248, 250, 252, 0.94);
+  --panel-2: rgba(27, 34, 51, 0.05);
+  --fill: rgba(27, 34, 51, 0.055);
+  --fill-strong: rgba(27, 34, 51, 0.1);
+  --text: #1b2233;
+  --text-soft: rgba(27, 34, 51, 0.74);
+  --muted: rgba(27, 34, 51, 0.5);
+  --line: rgba(27, 34, 51, 0.1);
+  --line-strong: rgba(27, 34, 51, 0.2);
+  --accent: #1b2233;
+  --accent-strong: #2e3a57;
+  --accent-soft: rgba(27, 34, 51, 0.08);
+  --on-accent: #f3f6f9;
+  --flame: #c4553b;
+  --pane-border: rgba(255, 255, 255, 0.55);
+  --pane-blur: blur(18px) saturate(1.15);
+  --shadow: 0 6px 24px rgba(10, 20, 40, 0.08);
+  --shadow-pop: 0 10px 32px rgba(10, 20, 40, 0.16);
+  --focus-ring: rgba(27, 34, 51, 0.28);
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
   --motion-fast: 150ms;
   --motion-medium: 220ms;
-  --danger: #ef4444;
-  --success: #16a34a;
-  --radius-xl: 8px;
-  --radius-lg: 8px;
-  --radius-md: 8px;
-  --radius-sm: 6px;
+  --danger: #b4412f;
+  --success: #1b2233;
+  --radius-xl: 18px;
+  --radius-lg: 14px;
+  --radius-md: 10px;
+  --radius-sm: 8px;
+  /* The sky (set per time of day below). */
+  --sky-top: #4a7fab;
+  --sky-mid: #6ca6c8;
+  --sky-horizon: #c6e3ea;
+  --cloud: rgba(255, 255, 255, 0.7);
 }
 
+/* The sky follows the hour (html[data-sky], set before paint and kept current by SkyClock). */
+[data-sky="dawn"] {
+  --sky-top: #7a8fb4;
+  --sky-mid: #c2b4c6;
+  --sky-horizon: #f1d6c4;
+}
+
+[data-sky="day"] {
+  --sky-top: #4a7fab;
+  --sky-mid: #6ca6c8;
+  --sky-horizon: #c6e3ea;
+}
+
+[data-sky="golden"] {
+  --sky-top: #6a84a8;
+  --sky-mid: #bca88f;
+  --sky-horizon: #f0d0a8;
+}
+
+[data-sky="dusk"] {
+  --sky-top: #545a86;
+  --sky-mid: #9890b0;
+  --sky-horizon: #dcc0bc;
+}
+
+[data-sky="late"] {
+  --sky-top: #3e4a6a;
+  --sky-mid: #74809c;
+  --sky-horizon: #b3bccb;
+  --cloud: rgba(255, 255, 255, 0.4);
+}
+
+/* Dark mode is the night sky, whatever the hour: pale ink on smoky glass. */
 [data-theme="dark"] {
-  --bg: #111723;
-  --bg-soft: #17211f;
-  --panel: rgba(18, 25, 36, 0.84);
-  --panel-solid: #121924;
-  --panel-2: rgba(132, 183, 168, 0.08);
-  --text: #f6f7fb;
-  --text-soft: rgba(246, 247, 251, 0.74);
-  --muted: rgba(246, 247, 251, 0.5);
-  --line: rgba(246, 247, 251, 0.1);
-  --line-strong: rgba(246, 247, 251, 0.18);
-  --shadow: 0 24px 64px rgba(0, 0, 0, 0.26);
-  --blue: #9aaed2;
-  --blue-deep: #c1cee4;
-  --green: #91c7b7;
-  --green-deep: #b1dbcf;
-  --purple: #c8a3bc;
-  --purple-deep: #dfc3d6;
-  --gray-accent: rgba(246, 247, 251, 0.55);
-  --yellow-bg: rgba(224, 152, 131, 0.16);
-  --yellow-text: #e4a18f;
-  --focus-ring: #91c7b7;
-  --danger: #f87171;
-  --success: #4ade80;
+  --bg: #0d1628;
+  --panel: rgba(18, 26, 44, 0.48);
+  --panel-solid: rgba(20, 28, 46, 0.95);
+  --panel-2: rgba(228, 233, 243, 0.06);
+  --fill: rgba(228, 233, 243, 0.07);
+  --fill-strong: rgba(228, 233, 243, 0.12);
+  --text: #e4e9f3;
+  --text-soft: rgba(228, 233, 243, 0.74);
+  --muted: rgba(228, 233, 243, 0.48);
+  --line: rgba(228, 233, 243, 0.11);
+  --line-strong: rgba(228, 233, 243, 0.2);
+  --accent: #e4e9f3;
+  --accent-strong: #ffffff;
+  --accent-soft: rgba(228, 233, 243, 0.1);
+  --on-accent: #121a2c;
+  --flame: #e58a6c;
+  --pane-border: rgba(255, 255, 255, 0.08);
+  --shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+  --shadow-pop: 0 12px 36px rgba(0, 0, 0, 0.5);
+  --focus-ring: rgba(228, 233, 243, 0.35);
+  --danger: #ef8f7c;
+  --success: #e4e9f3;
+  --sky-top: #070d1b;
+  --sky-mid: #13213b;
+  --sky-horizon: #34445f;
+  --cloud: rgba(170, 185, 215, 0.12);
 }
 
 *,
@@ -80,19 +123,74 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: var(--font-sans);
-  background:
-    linear-gradient(118deg, rgba(132, 183, 168, 0.12) 0%, transparent 38%),
-    linear-gradient(248deg, rgba(201, 117, 93, 0.1) 0%, transparent 42%),
-    linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
+  background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 45%, var(--sky-horizon) 100%) fixed var(--bg);
   color: var(--text);
-  line-height: 1.5;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  transition: background-color var(--motion-medium) var(--ease-out), color var(--motion-medium) var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--motion-medium) var(--ease-out);
 }
 
-/* Dark mode uses a flat background, no tinted gradients. */
-[data-theme="dark"] body {
-  background: var(--bg);
+/*
+ * Soft clouds drift slowly across the sky, and a pale haze sits on the
+ * horizon. In dark mode the clouds go faint and stars come out.
+ */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  pointer-events: none;
+}
+
+body::before {
+  inset: -10% -40%;
+  background:
+    radial-gradient(22% 9% at 18% 22%, var(--cloud), transparent 70%),
+    radial-gradient(30% 8% at 52% 14%, var(--cloud), transparent 70%),
+    radial-gradient(18% 7% at 80% 30%, var(--cloud), transparent 70%),
+    radial-gradient(26% 10% at 32% 58%, var(--cloud), transparent 72%),
+    radial-gradient(34% 11% at 74% 70%, var(--cloud), transparent 72%);
+  filter: blur(22px);
+  opacity: 0.85;
+  animation: clouds-drift 160s linear infinite alternate;
+}
+
+body::after {
+  inset: auto 0 0;
+  height: 45vh;
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--sky-horizon) 70%, white 30%));
+  opacity: 0.55;
+}
+
+[data-theme="dark"] body::after {
+  inset: 0;
+  height: auto;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1px 1px at 28% 42%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1.5px 1.5px at 46% 12%, rgba(255, 255, 255, 0.9), transparent),
+    radial-gradient(1px 1px at 63% 33%, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(1px 1px at 79% 9%, rgba(255, 255, 255, 0.75), transparent),
+    radial-gradient(1.5px 1.5px at 88% 46%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 7% 64%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 37% 77%, rgba(255, 255, 255, 0.45), transparent),
+    radial-gradient(1px 1px at 58% 61%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 93% 82%, rgba(255, 255, 255, 0.45), transparent);
+  opacity: 1;
+  animation: stars-twinkle 6s ease-in-out infinite alternate;
+}
+
+@keyframes clouds-drift {
+  to {
+    transform: translateX(14%);
+  }
+}
+
+@keyframes stars-twinkle {
+  to {
+    opacity: 0.6;
+  }
 }
 
 button,
@@ -127,24 +225,69 @@ ion-icon {
   min-width: 0;
 }
 
+/* Frosted panes on the sky, in the sky's own ink. */
 .card {
   background: var(--panel);
-  border: 1px solid var(--line);
+  border: 1px solid var(--pane-border);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow);
-  backdrop-filter: blur(18px);
+  backdrop-filter: var(--pane-blur);
 }
 
+/* The header is a letter on the sky itself, not on a pane. */
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(260px, auto);
   gap: 24px;
-  overflow: hidden;
-  padding: 28px;
-  margin-bottom: 18px;
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--panel-solid) 92%, transparent), color-mix(in srgb, var(--panel) 78%, transparent)),
-    linear-gradient(90deg, rgba(132, 183, 168, 0.1), rgba(201, 117, 93, 0.08));
+  padding: 28px 8px 20px;
+  margin-bottom: 8px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.hero-letter {
+  display: grid;
+  gap: 10px;
+  max-width: 34rem;
+  margin-top: 22px;
+}
+
+.hero-letter p {
+  margin: 0;
+}
+
+.hero-letter-date {
+  color: var(--text-soft);
+  font-size: 0.92rem;
+}
+
+.hero-letter-body {
+  color: var(--text);
+  font-size: 1.02rem;
+  line-height: 1.75;
+  white-space: pre-line;
+}
+
+.typewriter-caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.1em;
+  margin-bottom: -0.2em;
+  background: currentColor;
+  opacity: 0.55;
+  animation: caret-blink 1s steps(1) infinite;
+}
+
+.typewriter-rest {
+  visibility: hidden;
+}
+
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
 }
 
 .hero-main {
@@ -163,25 +306,26 @@ ion-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--line);
-  background: var(--text);
-  color: white;
-  box-shadow: 0 14px 30px rgba(29, 36, 48, 0.16);
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  color: var(--text);
 }
 
-[data-theme="dark"] .app-mark {
-  border-color: var(--line-strong);
-  background: color-mix(in srgb, var(--panel-solid) 82%, var(--green) 18%);
-  color: var(--green-deep);
-  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.24);
+.app-mark ion-icon {
+  font-size: 0.9rem;
 }
 
 .eyebrow,
 .section-label,
 .section-kicker,
+.summary-kicker,
+.summary-stat-label,
+.body-field span,
+.skin-product-field span,
+.skin-video-field span,
+.week-range-label,
 .field-label,
 .auth-field span,
 .auth-user-label,
@@ -190,14 +334,14 @@ ion-icon {
 .mobile-done-toggle span,
 .mobile-edit-hint {
   font-family: var(--font-mono);
-  letter-spacing: 0.09em;
+  font-weight: 500;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 .eyebrow {
   margin: 0;
-  font-size: 0.78rem;
-  font-weight: 600;
+  font-size: 0.74rem;
   color: var(--muted);
 }
 
@@ -205,39 +349,30 @@ h1,
 h2,
 h3 {
   margin: 0;
-  font-weight: 800;
-  letter-spacing: 0;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 h1 {
-  font-size: 5.5rem;
-  line-height: 0.95;
+  font-size: 3.2rem;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
 }
 
 h2 {
-  font-size: 2.15rem;
-  line-height: 1.02;
+  font-size: 1.45rem;
+  line-height: 1.3;
 }
 
+/* "Self" is signed by hand. */
 mark {
-  position: relative;
-  isolation: isolate;
-  display: inline-block;
+  padding: 0 0.06em;
   background: transparent;
   color: inherit;
-  font-weight: inherit;
-}
-
-mark::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  left: 0.02em;
-  right: 0.02em;
-  bottom: 0.05em;
-  height: 0.22em;
-  background: color-mix(in srgb, var(--yellow-text) 26%, transparent);
-  opacity: 1;
+  font-family: var(--font-signature);
+  font-size: 0.62em;
+  font-weight: 400;
+  letter-spacing: 0;
 }
 
 h3 {
@@ -287,11 +422,11 @@ h3 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: var(--radius-md);
-  border: 2px solid var(--line);
-  background: var(--panel-2);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: transparent;
 }
 
 .auth-user-copy {
@@ -318,7 +453,7 @@ h3 {
 
 .header-buttons {
   display: flex;
-  gap: 10px;
+  gap: 18px;
   flex-wrap: wrap;
   justify-content: flex-end;
 }
@@ -338,7 +473,7 @@ h3 {
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: var(--panel-solid);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-pop);
   z-index: 20;
 }
 
@@ -373,7 +508,7 @@ h3 {
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: var(--panel-solid);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-pop);
   z-index: 60;
 }
 
@@ -399,25 +534,34 @@ h3 {
   color: var(--text);
 }
 
+/*
+ * Buttons are small frosted chips labeled in uppercase mono, like the
+ * letter's tabs. The main action in a form is solid ink. Presses dip and
+ * spring back.
+ */
 .button,
 .auth-tab {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-height: 46px;
+  gap: 7px;
+  min-height: 42px;
   padding: 0 16px;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-lg);
+  border: 1px solid var(--pane-border);
+  border-radius: var(--radius-md);
   background: var(--panel);
   color: var(--text-soft);
-  font-size: 0.94rem;
-  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
   text-align: center;
+  text-transform: uppercase;
   cursor: pointer;
+  backdrop-filter: var(--pane-blur);
   transition: background-color var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out),
-    border-color var(--motion-fast) var(--ease-out), transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out);
+    transform 260ms var(--ease-spring), box-shadow var(--motion-fast) var(--ease-out);
 }
 
 .button span,
@@ -432,123 +576,90 @@ h3 {
   flex-shrink: 0;
 }
 
-[data-theme="dark"] .button,
-[data-theme="dark"] .auth-tab {
-  background: var(--panel);
-}
-
 .button:hover,
 .button:focus-visible,
 .auth-tab:hover,
 .auth-tab:focus-visible {
   outline: none;
   color: var(--text);
-  border-color: var(--text);
-  background: var(--panel-2);
+  background: color-mix(in srgb, var(--panel-solid) 70%, transparent);
+}
+
+/* Save buttons in forms (and sign-in) are the primary action: solid ink. */
+.button[type="submit"]:not(.button-secondary),
+.auth-submit {
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.button[type="submit"]:not(.button-secondary):hover,
+.button[type="submit"]:not(.button-secondary):focus-visible,
+.auth-submit:hover,
+.auth-submit:focus-visible {
+  background: var(--accent-strong);
+  color: var(--on-accent);
 }
 
 .button:focus-visible,
 .auth-tab:focus-visible,
 .settings-item:focus-visible,
 .context-menu-item:focus-visible {
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus-ring) 45%, transparent);
+  box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 .button:active,
 .auth-tab:active {
-  transform: scale(0.97);
+  transform: scale(0.96);
+  transition-duration: 80ms;
 }
 
 .button:disabled {
-  opacity: 0.45;
+  opacity: 0.4;
   cursor: default;
   transform: none;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .button:hover,
-  .auth-tab:hover {
-    transform: translateY(-1px);
-  }
-
-  .button:hover ion-icon,
-  .auth-tab:hover ion-icon,
-  .settings-item:hover ion-icon,
-  .context-menu-item:hover ion-icon {
-    transform: translateY(-1px) scale(1.06);
-  }
-
   #themeToggle:hover ion-icon {
-    transform: rotate(18deg) scale(1.06);
+    transform: rotate(18deg);
   }
 
   #settingsButton:hover ion-icon {
-    transform: rotate(28deg);
-  }
-
-  #logoutButton:hover ion-icon {
-    transform: translateX(3px);
+    transform: rotate(45deg);
   }
 }
 
-#themeToggle {
-  border-color: var(--line-strong);
-  color: var(--text-soft);
-}
-
-#themeToggle:hover,
-#themeToggle:focus-visible {
-  background: var(--panel-2);
-}
-
-.auth-submit,
-.button-secondary {
-  border-color: var(--line-strong);
-  color: var(--text-soft);
-}
-
-.auth-submit,
-[data-theme="dark"] .auth-submit {
+.auth-submit {
   width: 100%;
-  border-color: var(--text);
-  background: var(--text);
-  color: var(--panel);
+  min-height: 50px;
 }
 
-.auth-submit:hover,
-.auth-submit:focus-visible,
-[data-theme="dark"] .auth-submit:hover,
-[data-theme="dark"] .auth-submit:focus-visible {
-  border-color: var(--text);
-  background: var(--text-soft);
-  color: var(--panel);
+.button-secondary {
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.7rem;
 }
 
-.button-secondary:hover,
-.button-secondary:focus-visible {
-  background: var(--panel-2);
-}
-
+/* In the header they're quiet text links on the sky, like the reference's tabs. */
+.header-buttons .button,
 #logoutButton {
-  border-color: var(--line-strong);
+  min-height: 32px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
   color: var(--muted);
+  backdrop-filter: none;
 }
 
+.header-buttons .button:hover,
+.header-buttons .button:focus-visible,
 #logoutButton:hover,
 #logoutButton:focus-visible {
-  background: var(--panel-2);
-}
-
-.button-secondary {
-  min-height: 38px;
-  padding: 0 12px;
-  font-size: 0.82rem;
-}
-
-#settingsButton {
-  min-height: 46px;
-  padding: 0 16px;
-  font-size: 0.94rem;
+  background: transparent;
+  color: var(--text);
 }
 
 .save-status {
@@ -593,28 +704,25 @@ h3 {
   justify-self: stretch;
   width: 100%;
   padding: 4px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: color-mix(in srgb, var(--panel-solid) 70%, transparent);
+  border-radius: var(--radius-md);
+  background: var(--fill);
 }
 
 .auth-tab {
   min-width: 0;
-  min-height: 38px;
+  min-height: 40px;
   border: 0;
+  border-radius: var(--radius-sm);
   background: transparent;
   color: var(--muted);
+  backdrop-filter: none;
 }
 
-.auth-tab.is-active {
-  background: var(--panel);
-  color: var(--text);
-  box-shadow: 0 10px 24px rgba(29, 36, 48, 0.08);
-}
-
+.auth-tab.is-active,
 .auth-tab:hover,
 .auth-tab:focus-visible {
-  background: var(--panel);
+  background: transparent;
+  color: var(--text);
 }
 
 .auth-form {
@@ -654,25 +762,26 @@ h3 {
 }
 
 .auth-field span {
-  font-size: 0.72rem;
-  color: var(--muted);
+  font-size: 0.82rem;
+  color: var(--text-soft);
   font-weight: 600;
 }
 
 .auth-field input {
-  height: 46px;
-  padding: 0 12px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  background: var(--panel-solid);
+  height: 52px;
+  padding: 0 16px;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-md);
+  background: var(--fill);
   color: var(--text);
-  transition: border-color var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out);
+  font-size: 1rem;
+  transition: border-color var(--motion-fast) var(--ease-out), background-color var(--motion-fast) var(--ease-out);
 }
 
 .auth-field input:focus {
   outline: none;
-  border-color: var(--text);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--text) 8%, transparent);
+  border-color: var(--accent);
+  background: var(--panel-solid);
 }
 
 .auth-message {
@@ -691,46 +800,9 @@ h3 {
   color: var(--success);
 }
 
-/* Sign in and sign up each get their own accent so the mode is obvious. */
-.auth-card {
-  --auth-accent: var(--blue);
-  border-top: 3px solid var(--auth-accent);
-  transition: border-color var(--motion-medium) var(--ease-out);
-}
-
-.auth-card[data-mode="sign-up"] {
-  --auth-accent: var(--green);
-}
-
 .auth-card .auth-mode-label,
 .auth-card .auth-mode-label ion-icon {
-  color: var(--auth-accent);
-}
-
-.auth-card .auth-tab.is-active,
-.auth-card .auth-tab.is-active:hover,
-.auth-card .auth-tab.is-active:focus-visible {
-  background: var(--auth-accent);
-  color: var(--panel-solid);
-  box-shadow: 0 8px 20px color-mix(in srgb, var(--auth-accent) 28%, transparent);
-}
-
-.auth-card .auth-submit,
-.auth-card .auth-submit:hover,
-.auth-card .auth-submit:focus-visible {
-  border-color: var(--auth-accent);
-  background: var(--auth-accent);
-  color: var(--panel-solid);
-}
-
-.auth-card .auth-submit:hover,
-.auth-card .auth-submit:focus-visible {
-  filter: brightness(1.08);
-}
-
-.auth-card .auth-field input:focus {
-  border-color: var(--auth-accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--auth-accent) 18%, transparent);
+  color: var(--accent);
 }
 
 .auth-field-hint {
@@ -746,8 +818,8 @@ h3 {
 }
 
 .auth-switch .auth-reset-option {
-  color: var(--auth-accent);
-  border-bottom-color: currentColor;
+  color: var(--accent);
+  border-bottom-color: transparent;
 }
 
 .auth-mode-swap {
