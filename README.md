@@ -1,13 +1,5 @@
 <div align="center">
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/preview-dark.jpg">
-  <img src="docs/preview-light.jpg" alt="My Self Care: a typed letter and today's journal under a hazy sky" width="100%">
-</picture>
-
-<br>
-<br>
-
 # My Self Care
 
 <img src="https://readme-typing-svg.demolab.com?font=Courier+Prime&size=17&duration=3200&pause=1400&color=8B95A1&center=true&vCenter=true&width=560&lines=Dear+you%2C+a+small+journal+for+skin%2C+body+%26+style.;Routines%2C+streaks+and+notes+under+a+calm+sky." alt="Dear you, a small journal for skin, body & style.">
