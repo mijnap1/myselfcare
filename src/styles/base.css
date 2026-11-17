@@ -1,12 +1,12 @@
 /*
  * A journal on a desk: paper-white cards, a pale blue binder for the header,
  * ruled lines to write on, sky blue for today, black ink for the main
- * actions, and a few pastel note colors (apricot, coral, lime, lavender, sky).
+ * actions, and a few pastel note colors (peach, rose, mint, lavender, sky).
  */
 :root {
   --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo",
     "Noto Sans KR", sans-serif;
-  --font-display: var(--font-outfit), "Pretendard Variable", Pretendard, system-ui, sans-serif;
+  --font-display: var(--font-poppins), "Pretendard Variable", Pretendard, system-ui, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
   --bg: #f2f4f7;
   --panel: #ffffff;
@@ -27,12 +27,12 @@
   --today: #3a9ff0;
   --card-border: transparent;
   --pane-border: transparent;
-  /* Note colors, from the pastel sticky-note set. */
-  --tint-apricot: #ffd596;
-  --tint-coral: #ffb196;
-  --tint-lime: #e5ec9c;
-  --tint-lavender: #cdbaf8;
-  --tint-sky: #aedcf4;
+  /* Note colors: one soft pastel family (peach, rose, mint, lavender, sky). Skin is sky, body mint, style lavender. */
+  --tint-peach: #ffe0c2;
+  --tint-rose: #fbd2dc;
+  --tint-mint: #cdeedb;
+  --tint-lavender: #ddd3fb;
+  --tint-sky: #cce5f8;
   --tint-ink: #262a33;
   --paper: #fcfcfd;
   --cover: #cfe5f6;
@@ -74,11 +74,11 @@
   --flame: #ff8f5a;
   --today: #5cb2f5;
   --card-border: rgba(255, 246, 230, 0.06);
-  --tint-apricot: #4b3b22;
-  --tint-coral: #4c2e24;
-  --tint-lime: #3b3f22;
-  --tint-lavender: #352c4c;
-  --tint-sky: #1f3a49;
+  --tint-peach: #46362a;
+  --tint-rose: #472b34;
+  --tint-mint: #1f3d31;
+  --tint-lavender: #342c4a;
+  --tint-sky: #1f3647;
   --tint-ink: #eef1f6;
   --paper: #202328;
   --cover: #233a4f;
@@ -145,7 +145,7 @@ ion-icon {
 .page-shell {
   width: min(1280px, calc(100% - 48px));
   margin: 0 auto;
-  padding: 22px 0 calc(140px + env(safe-area-inset-bottom));
+  padding: 22px 0 64px;
 }
 
 .journal-area {
@@ -159,52 +159,15 @@ ion-icon {
   box-shadow: var(--shadow);
 }
 
-/* The header sits on the paper: a small top bar, then a big title and the Today card. */
-.hero {
-  display: grid;
-  gap: 34px;
-  padding: 0 4px 30px;
-}
-
-.hero-bar {
+/* Above the notebook, on the desk: account and settings, on the right. */
+.desk-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 16px;
   min-height: 44px;
+  margin: 0 4px 18px;
   animation: enter-lift 260ms var(--ease-out) 40ms backwards;
-}
-
-.hero-topline {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-}
-
-.app-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: var(--accent);
-  color: var(--on-accent);
-}
-
-.app-mark ion-icon {
-  font-size: 0.95rem;
-}
-
-.eyebrow {
-  margin: 0;
-  color: var(--text);
-  font-family: var(--font-display);
-  font-size: 0.98rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  white-space: nowrap;
 }
 
 .hero-main {
@@ -227,9 +190,9 @@ ion-icon {
 .mobile-field-label,
 .mobile-done-toggle span,
 .mobile-edit-hint {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  letter-spacing: -0.005em;
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: 0;
   text-transform: none;
 }
 
@@ -288,74 +251,91 @@ h3 {
 }
 
 /*
- * The notebook: a pale blue binder holding two paper pages, joined by rings.
- * The left page has the date and the title; the right page has today's note
- * card and a ruled page to write on.
+ * The whole app is one ring-bound notebook: a pale blue cover, a single
+ * paper page, rings down the left edge (along the top on phones), and index
+ * tabs for the sections sticking out of the right edge.
  */
 .notebook {
+  --rings: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23f6f8fb'/%3E%3Cstop offset='.55' stop-color='%23b9c2cf'/%3E%3Cstop offset='1' stop-color='%23e6eaf0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='3' y='16' width='36' height='12' rx='6' fill='%23000' fill-opacity='.18'/%3E%3Crect x='2' y='14' width='36' height='12' rx='6' fill='url(%23g)'/%3E%3C/svg%3E");
+  --rings-top: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%23f6f8fb'/%3E%3Cstop offset='.55' stop-color='%23b9c2cf'/%3E%3Cstop offset='1' stop-color='%23e6eaf0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='15' y='4' width='12' height='36' rx='6' fill='%23000' fill-opacity='.18'/%3E%3Crect x='14' y='2' width='12' height='36' rx='6' fill='url(%23g)'/%3E%3C/svg%3E");
   position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 10px;
-  padding: 10px;
+  isolation: isolate;
+  padding: 12px;
   border-radius: 30px;
   background: linear-gradient(160deg, var(--cover), color-mix(in srgb, var(--cover) 82%, var(--cover-edge)));
   box-shadow:
     inset 0 0 0 1px var(--cover-edge),
     inset 0 2px 0 rgba(255, 255, 255, 0.5),
     0 30px 60px -34px rgba(40, 90, 140, 0.55);
-  animation: notebook-open 640ms var(--ease-out) 60ms backwards;
 }
 
-.notebook.is-spread {
-  grid-template-columns: minmax(0, 1fr) 0 minmax(0, 1fr);
+[data-theme="dark"] .notebook {
+  --rings: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%239aa4b3'/%3E%3Cstop offset='.55' stop-color='%234d5562'/%3E%3Cstop offset='1' stop-color='%237d8796'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='3' y='16' width='36' height='12' rx='6' fill='%23000' fill-opacity='.18'/%3E%3Crect x='2' y='14' width='36' height='12' rx='6' fill='url(%23g)'/%3E%3C/svg%3E");
+  --rings-top: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%239aa4b3'/%3E%3Cstop offset='.55' stop-color='%234d5562'/%3E%3Cstop offset='1' stop-color='%237d8796'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='15' y='4' width='12' height='36' rx='6' fill='%23000' fill-opacity='.18'/%3E%3Crect x='14' y='2' width='12' height='36' rx='6' fill='url(%23g)'/%3E%3C/svg%3E");
+}
+
+.notebook.has-tabs {
+  margin-right: 64px;
+}
+
+/* The rings, straddling the cover and the page. */
+.notebook::before {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  top: 30px;
+  bottom: 30px;
+  left: -6px;
+  width: 40px;
+  background: var(--rings) center top / 40px 40px repeat-y;
+  pointer-events: none;
 }
 
 .notebook-page {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
   min-width: 0;
-  padding: 26px 30px 30px;
-  border-radius: 20px;
+  padding: 34px 40px 44px 54px;
+  border-radius: 22px;
   background: var(--paper);
   box-shadow: 0 1px 2px rgba(30, 60, 100, 0.08), 0 8px 18px -12px rgba(30, 60, 100, 0.22);
+  animation: notebook-open 560ms var(--ease-out) 60ms backwards;
 }
 
-/* A soft fold toward the spine. */
-.notebook.is-spread .notebook-left {
-  background: linear-gradient(270deg, rgba(30, 60, 100, 0.06), transparent 28px), var(--paper);
+/* Inside the notebook, cards are flat panels drawn with a hairline. */
+.notebook-page .card {
+  border-color: var(--line);
+  box-shadow: none;
 }
 
-.notebook-right {
-  background: linear-gradient(90deg, rgba(30, 60, 100, 0.06), transparent 28px), var(--paper);
+.notebook-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 36px;
+  padding-bottom: 34px;
+  margin-bottom: 34px;
+  border-bottom: 1px solid var(--line);
 }
 
-.notebook-left .hero-main {
+.notebook-intro.has-greeting {
+  grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+}
+
+.notebook-intro-main {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-width: 0;
+}
+
+.notebook-intro-main .hero-main {
   margin-top: auto;
 }
 
-.notebook-rings {
-  position: relative;
-  z-index: 2;
+.notebook-intro-note {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  padding: 18px 0;
-}
-
-.notebook-ring {
-  width: 34px;
-  height: 12px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, #f6f8fb, #b9c2cf 55%, #e6eaf0);
-  box-shadow: 0 2px 4px rgba(20, 40, 70, 0.28), inset 0 -1px 0 rgba(0, 0, 0, 0.12);
-}
-
-[data-theme="dark"] .notebook-ring {
-  background: linear-gradient(180deg, #9aa4b3, #4d5562 55%, #7d8796);
+  gap: 18px;
+  min-width: 0;
 }
 
 .hero-date {
@@ -388,6 +368,44 @@ h3 {
 .hero-date-day {
   color: var(--muted);
   font-size: 0.8rem;
+}
+
+.hero-glance {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hero-glance li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 14px 0 11px;
+  border-radius: 999px;
+  background: var(--glance-tint, var(--tint-sky));
+  color: var(--tint-ink);
+  font-family: var(--font-display);
+  font-size: 0.84rem;
+}
+
+.hero-glance strong {
+  font-weight: 600;
+}
+
+.hero-glance .is-streak {
+  --glance-tint: var(--tint-peach);
+}
+
+.hero-glance .is-streak ion-icon {
+  color: var(--flame);
+}
+
+.hero-glance .is-weight {
+  --glance-tint: var(--tint-mint);
 }
 
 /* Today's note: a frosted card in soft sky, blush and mint. */
@@ -526,7 +544,7 @@ h3 {
   }
 }
 
-.hero-actions {
+.desk-actions {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -686,9 +704,9 @@ h3 {
   border-radius: 999px;
   background: var(--fill);
   color: var(--text);
-  font-family: var(--font-sans);
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: 0.86rem;
+  font-weight: 500;
   text-align: center;
   cursor: pointer;
   transition: background-color var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out),
@@ -1008,4 +1026,24 @@ h3 {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Poppins for the small UI words and numbers too. */
+.section-subtab,
+.mood-chip,
+.today-step small,
+.day-chip,
+.summary-meta,
+.streak-level,
+.streak-count span,
+.streak-stats,
+.streak-day small,
+.streak-badge small,
+.body-hero-stat strong,
+.today-badge,
+.auth-user-email,
+.lined-note-label,
+.moment-card-head,
+.hero-date {
+  font-family: var(--font-display);
 }

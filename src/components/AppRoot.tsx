@@ -7,6 +7,7 @@ import { isMissingTableError, loadOrCreateJournalDocument } from "@/lib/journal/
 import { getBrowserSupabase } from "@/lib/supabase/client";
 import { AuthCard } from "./auth/AuthCard";
 import { Header } from "./Header";
+import { Notebook } from "./Notebook";
 import { JournalApp } from "./journal/JournalApp";
 import { LoadingShell } from "./journal/LoadingShell";
 import { SetupNotice } from "./journal/SetupNotice";
@@ -79,22 +80,26 @@ export function AppRoot() {
       return (
         <div className="page-shell">
           <Header />
-          <AuthCard />
+          <Notebook>
+            <AuthCard />
+          </Notebook>
         </div>
       );
     case "error":
       return (
         <div className="page-shell">
           <Header />
-          <section className="auth-card card">
-            <div className="auth-card-copy">
-              <h2>기록을 불러오지 못했어요</h2>
-              <p className="section-note">인터넷 연결을 확인하고 다시 시도해 주세요.</p>
-            </div>
-            <button className="button auth-submit" type="button" onClick={() => window.location.reload()}>
-              다시 시도
-            </button>
-          </section>
+          <Notebook>
+            <section className="auth-card card">
+              <div className="auth-card-copy">
+                <h2>기록을 불러오지 못했어요</h2>
+                <p className="section-note">인터넷 연결을 확인하고 다시 시도해 주세요.</p>
+              </div>
+              <button className="button auth-submit" type="button" onClick={() => window.location.reload()}>
+                다시 시도
+              </button>
+            </section>
+          </Notebook>
         </div>
       );
     case "ready":

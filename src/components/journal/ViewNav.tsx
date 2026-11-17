@@ -1,7 +1,7 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
-import { createPortal } from "react-dom";
+import { useLayoutEffect, useRef, type CSSProperties } from "react";
+import { SegmentIndicator } from "../SegmentIndicator";
 import { Icon } from "../Icon";
 
 export type View = "skin" | "body" | "style";
@@ -9,9 +9,9 @@ export type SkinSection = "routine" | "products";
 export type BodySection = "progress" | "workouts";
 
 const VIEW_TABS = [
-  { view: "skin", id: "skinViewTab", icon: "water-outline", label: "Skin Care" },
-  { view: "body", id: "bodyViewTab", icon: "barbell-outline", label: "Body Care" },
-  { view: "style", id: "styleViewTab", icon: "shirt-outline", label: "Style Care" },
+  { view: "skin", id: "skinViewTab", icon: "water-outline", label: "Skin Care", title: "스킨 케어" },
+  { view: "body", id: "bodyViewTab", icon: "barbell-outline", label: "Body Care", title: "바디 케어" },
+  { view: "style", id: "styleViewTab", icon: "shirt-outline", label: "Style Care", title: "스타일 케어" },
 ] as const;
 
 const SUB_TABS = {
@@ -27,40 +27,25 @@ const SUB_TABS = {
 
 interface ViewNavProps {
   view: View;
-  skinSection: SkinSection;
-  bodySection: BodySection;
   onViewChange: (view: View) => void;
-  onSkinSectionChange: (section: SkinSection) => void;
-  onBodySectionChange: (section: BodySection) => void;
 }
 
 /**
- * Floating section nav. The active highlights are single elements that slide
- * between tabs, and the sub-tab row animates its height instead of popping in
- * and out (Style Care has no sub-sections, so the row collapses there).
+ * The notebook's index tabs: dividers sticking out of its right edge on wide
+ * screens, and a floating bar at the bottom on phones.
  */
-export function ViewNav({
-  view,
-  skinSection,
-  bodySection,
-  onViewChange,
-  onSkinSectionChange,
-  onBodySectionChange,
-}: ViewNavProps) {
-  // While Style Care is open, keep the last sub-tab row rendered so it can
-  // fade out as the row collapses instead of vanishing first.
-  const [lastSubKind, setLastSubKind] = useState<"skin" | "body">(view === "body" ? "body" : "skin");
-  const hasSubTabs = view !== "style";
+export function ViewNav({ view, onViewChange }: ViewNavProps) {
   const navRef = useRef<HTMLElement>(null);
 
-  // Publish how much of the viewport bottom the floating nav covers, so toasts
-  // and popovers can sit above it (follows the sub-tab row as it animates).
+  // Publish how much of the viewport bottom the nav covers (only when it is
+  // the floating bar), so toasts and popovers can sit above it.
   useLayoutEffect(() => {
     const nav = navRef.current;
     if (!nav) return;
     const root = document.documentElement;
     const publish = () => {
-      const covered = Math.max(window.innerHeight - nav.getBoundingClientRect().top, 0);
+      const floating = getComputedStyle(nav).position === "fixed";
+      const covered = floating ? Math.max(window.innerHeight - nav.getBoundingClientRect().top, 0) : 0;
       root.style.setProperty("--view-nav-offset", `${Math.round(covered)}px`);
     };
     publish();
@@ -73,24 +58,8 @@ export function ViewNav({
       root.style.removeProperty("--view-nav-offset");
     };
   }, []);
-  const subKind = view === "style" ? lastSubKind : view;
 
-  const selectView = (next: View) => {
-    if (next === "style") {
-      setLastSubKind(subKind);
-    }
-    onViewChange(next);
-  };
-
-  const subTabs = SUB_TABS[subKind];
-  const activeSub = subKind === "skin" ? skinSection : bodySection;
-  const subIndex = Math.max(
-    subTabs.findIndex((tab) => tab.value === activeSub),
-    0
-  );
-
-  // Rendered on <body> so animated (transformed) page sections can't shift this fixed bar.
-  return createPortal(
+  return (
     <nav
       ref={navRef}
       className="view-tabs"
@@ -104,49 +73,71 @@ export function ViewNav({
           <button
             key={tab.view}
             id={tab.id}
-            className={`view-tab${view === tab.view ? " is-active" : ""}`}
+            className={`view-tab is-${tab.view}${view === tab.view ? " is-active" : ""}`}
             type="button"
             aria-pressed={view === tab.view}
-            onClick={() => selectView(tab.view)}
+            onClick={() => onViewChange(tab.view)}
           >
             <Icon name={tab.icon} />
             <span>{tab.label}</span>
           </button>
         ))}
       </div>
+    </nav>
+  );
+}
 
-      <div className="view-subtabs-shell" data-open={hasSubTabs} inert={!hasSubTabs}>
-        <div className="view-subtabs-clip">
-          <div
-            key={subKind}
-            className={`${subKind}-subtabs view-subtabs`}
-            aria-label={subKind === "skin" ? "Skin sections" : "Body sections"}
-            style={{ "--sub-index": subIndex } as CSSProperties}
-          >
-            <span className="view-subtab-indicator" aria-hidden="true" />
-            {subTabs.map((tab) => {
-              const isActive = activeSub === tab.value;
-              return (
-                <button
-                  key={tab.value}
-                  className={`${subKind}-subtab${isActive ? " is-active" : ""}`}
-                  type="button"
-                  aria-pressed={isActive}
-                  onClick={() =>
-                    subKind === "skin"
-                      ? onSkinSectionChange(tab.value as SkinSection)
-                      : onBodySectionChange(tab.value as BodySection)
-                  }
-                >
-                  <Icon name={tab.icon} />
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
-          </div>
+interface SectionBarProps {
+  view: View;
+  skinSection: SkinSection;
+  bodySection: BodySection;
+  onSkinSectionChange: (section: SkinSection) => void;
+  onBodySectionChange: (section: BodySection) => void;
+}
+
+/** The first line of each notebook section: its name, and its pages as a switch. */
+export function SectionBar({ view, skinSection, bodySection, onSkinSectionChange, onBodySectionChange }: SectionBarProps) {
+  const index = VIEW_TABS.findIndex((tab) => tab.view === view);
+  const tab = VIEW_TABS[index];
+  const subTabs = view === "style" ? null : SUB_TABS[view];
+  const activeSub = view === "skin" ? skinSection : bodySection;
+
+  return (
+    <div key={view} className="section-bar" data-view={view}>
+      <div className="section-bar-title">
+        <span className="section-bar-icon" aria-hidden="true">
+          <Icon name={tab.icon} />
+        </span>
+        <div>
+          <p className="section-bar-number">Section {String(index + 1).padStart(2, "0")}</p>
+          <h2>{tab.title}</h2>
         </div>
       </div>
-    </nav>,
-    document.body
+
+      {subTabs && (
+        <div className="section-subtabs has-segment-indicator" role="group" aria-label={`${tab.label} pages`}>
+          <SegmentIndicator activeKey={`${view}-${activeSub}`} />
+          {subTabs.map((sub) => {
+            const isActive = activeSub === sub.value;
+            return (
+              <button
+                key={sub.value}
+                className={`section-subtab${isActive ? " is-active" : ""}`}
+                type="button"
+                aria-pressed={isActive}
+                onClick={() =>
+                  view === "skin"
+                    ? onSkinSectionChange(sub.value as SkinSection)
+                    : onBodySectionChange(sub.value as BodySection)
+                }
+              >
+                <Icon name={sub.icon} />
+                <span>{sub.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
   );
 }

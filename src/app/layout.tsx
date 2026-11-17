@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
+import { Poppins } from "next/font/google";
 import Script from "next/script";
 import { THEME_STORAGE_KEY } from "@/lib/journal/constants";
 import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 import "./globals.css";
 
-// A round geometric face for titles and numbers; Pretendard carries the body text and Hangul.
-const outfit = Outfit({
+// Poppins for titles, labels, buttons and numbers; Pretendard carries the body text and Hangul.
+const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  variable: "--font-outfit",
+  variable: "--font-poppins",
 });
 
 export const metadata: Metadata = {
@@ -30,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="ko"
       data-theme="light"
-      className={outfit.variable}
+      className={poppins.variable}
       suppressHydrationWarning
     >
       <head>

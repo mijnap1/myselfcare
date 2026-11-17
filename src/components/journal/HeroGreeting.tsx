@@ -1,7 +1,7 @@
 "use client";
 
-import { getTodayDateKey } from "@/lib/journal/dates";
-import { extendTimelineTo } from "@/lib/journal/timeline";
+import { addDays, getTodayDateKey, getWeekStartDateKey } from "@/lib/journal/dates";
+import { extendTimelineTo, getStreakInfo } from "@/lib/journal/timeline";
 import { Icon } from "../Icon";
 import { Typewriter } from "../Typewriter";
 import { useJournal } from "./JournalContext";
@@ -33,6 +33,46 @@ export function HeroDate() {
         <p className="hero-date-day">{now.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</p>
       </div>
     </div>
+  );
+}
+
+/** Three small facts under the title: the streak, this week's checked days, and the latest weight. */
+export function HeroGlance() {
+  const { data } = useJournal();
+  const todayKey = getTodayDateKey();
+  const weekStart = getWeekStartDateKey(todayKey);
+  const weekEnd = addDays(weekStart, 6);
+  const weekDone = data.skinTimeline.filter((entry) => entry.done && entry.date >= weekStart && entry.date <= weekEnd).length;
+  const latest = data.bodyProgress.entries
+    .filter((entry) => entry.weightKg && entry.date <= todayKey)
+    .reduce<(typeof data.bodyProgress.entries)[number] | null>(
+      (last, entry) => (!last || entry.date > last.date ? entry : last),
+      null
+    );
+
+  return (
+    <ul className="hero-glance" aria-label="At a glance">
+      <li className="is-streak">
+        <Icon name="flame" />
+        <span>
+          <strong>{getStreakInfo(data.skinTimeline).current}</strong>일 연속
+        </span>
+      </li>
+      <li className="is-week">
+        <Icon name="checkmark-circle" />
+        <span>
+          이번 주 <strong>{weekDone}</strong>/7
+        </span>
+      </li>
+      {latest && (
+        <li className="is-weight">
+          <Icon name="scale-outline" />
+          <span>
+            <strong>{latest.weightKg}</strong> kg
+          </span>
+        </li>
+      )}
+    </ul>
   );
 }
 

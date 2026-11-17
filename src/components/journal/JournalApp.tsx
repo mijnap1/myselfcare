@@ -11,10 +11,11 @@ import { normalizeJournalData, toPayload } from "@/lib/journal/normalize";
 import { extendTimelineTo, getTodayIndex, getWeekStartIndex } from "@/lib/journal/timeline";
 import type { JournalData } from "@/lib/journal/types";
 import { Header } from "../Header";
+import { Notebook } from "../Notebook";
 import { BodyProgressSection } from "./body/BodyProgressSection";
 import { BodyNotesSection } from "./body/BodyNotesSection";
 import { AccountBadge } from "./AccountBadge";
-import { HeroDate, HeroGreeting } from "./HeroGreeting";
+import { HeroDate, HeroGlance, HeroGreeting } from "./HeroGreeting";
 import { JournalContext, type JournalContextValue } from "./JournalContext";
 import { SettingsMenu } from "./SettingsMenu";
 import { ProductShelf } from "./skin/ProductShelf";
@@ -23,7 +24,7 @@ import { StyleBoardSection } from "./style/StyleBoardSection";
 import { useJournalStore } from "./useJournalStore";
 import { usePersistentChoice } from "./usePersistentChoice";
 import { useUndoToast } from "./useUndoToast";
-import { ViewNav } from "./ViewNav";
+import { SectionBar, ViewNav } from "./ViewNav";
 
 export interface JournalAppProps {
   userId: string;
@@ -138,44 +139,48 @@ export function JournalApp({ userId, username, initialData, initialVersion }: Jo
           account={<AccountBadge username={username} onBeforeSignOut={flush} />}
           actions={<SettingsMenu onDuplicateWeek={duplicateWeek} onExport={exportJson} onImportFile={importJson} />}
           status={syncStatus}
-          dateline={<HeroDate />}
-          greeting={<HeroGreeting username={username} />}
         />
 
-        <main id="appContent" className="app-content">
-          <ViewNav
-            view={view}
-            skinSection={skinSection}
-            bodySection={bodySection}
-            onViewChange={setView}
-            onSkinSectionChange={setSkinSection}
-            onBodySectionChange={setBodySection}
-          />
+        <Notebook
+          tabs={<ViewNav view={view} onViewChange={setView} />}
+          dateline={<HeroDate />}
+          glance={<HeroGlance />}
+          greeting={<HeroGreeting username={username} />}
+        >
+          <main id="appContent" className="app-content">
+            <SectionBar
+              view={view}
+              skinSection={skinSection}
+              bodySection={bodySection}
+              onSkinSectionChange={setSkinSection}
+              onBodySectionChange={setBodySection}
+            />
 
-          <section className="content-view layout-section" hidden={view !== "skin"}>
-            <div className="layout" hidden={skinSection !== "routine"}>
-              <RoutineSection viewState={routineView} onViewStateChange={setRoutineView} />
-            </div>
-            <section className="skin-products-shell" hidden={skinSection !== "products"}>
-              <ProductShelf />
+            <section className="content-view layout-section" hidden={view !== "skin"}>
+              <div className="layout" hidden={skinSection !== "routine"}>
+                <RoutineSection viewState={routineView} onViewStateChange={setRoutineView} />
+              </div>
+              <section className="skin-products-shell" hidden={skinSection !== "products"}>
+                <ProductShelf />
+              </section>
             </section>
-          </section>
 
-          <section className="content-view layout-section body-view" hidden={view !== "body"}>
-            <div className="body-shell" hidden={bodySection !== "progress"}>
-              <BodyProgressSection />
-            </div>
-            <section className="body-workout-shell" hidden={bodySection !== "workouts"}>
-              <BodyNotesSection />
+            <section className="content-view layout-section body-view" hidden={view !== "body"}>
+              <div className="body-shell" hidden={bodySection !== "progress"}>
+                <BodyProgressSection />
+              </div>
+              <section className="body-workout-shell" hidden={bodySection !== "workouts"}>
+                <BodyNotesSection />
+              </section>
             </section>
-          </section>
 
-          <section className="content-view layout-section style-view" hidden={view !== "style"}>
-            <div className="style-shell">
-              <StyleBoardSection />
-            </div>
-          </section>
-        </main>
+            <section className="content-view layout-section style-view" hidden={view !== "style"}>
+              <div className="style-shell">
+                <StyleBoardSection />
+              </div>
+            </section>
+          </main>
+        </Notebook>
       </div>
       {toast}
     </JournalContext>

@@ -13,42 +13,14 @@
   .page-shell {
     width: min(100% - 24px, 920px);
     padding-top: 16px;
-    padding-bottom: calc(140px + env(safe-area-inset-bottom));
   }
 
-  .hero {
-    gap: 26px;
-    padding: 0 2px 24px;
-  }
-
-  /* Stacked pages, bound along the top edge instead. */
-  .notebook.is-spread {
+  .notebook-intro.has-greeting {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto 0 auto;
-  }
-
-  .notebook-rings {
-    flex-direction: row;
-    padding: 0 18px;
-  }
-
-  .notebook-ring {
-    width: 12px;
-    height: 34px;
-    background: linear-gradient(90deg, #f6f8fb, #b9c2cf 55%, #e6eaf0);
-  }
-
-  [data-theme="dark"] .notebook-ring {
-    background: linear-gradient(90deg, #9aa4b3, #4d5562 55%, #7d8796);
-  }
-
-  .notebook.is-spread .notebook-left,
-  .notebook-right {
-    background: var(--paper);
   }
 
   .notebook-page {
-    padding: 22px 22px 26px;
+    padding: 30px 26px 34px 46px;
   }
 
   h1 {
@@ -61,13 +33,6 @@
   .skin-product-form-grid,
   .style-form-grid {
     grid-template-columns: 1fr;
-  }
-
-  .skin-subtabs,
-  .body-subtabs {
-    width: min(100%, 420px);
-    justify-content: center;
-    margin-inline: auto;
   }
 
   .skin-video-card-actions {
@@ -100,14 +65,6 @@
     flex-direction: column;
     align-items: flex-start;
     padding: 0;
-  }
-
-  .view-tabs {
-    width: calc(100% - 24px);
-  }
-
-  .view-tab {
-    justify-content: center;
   }
 
   .week-nav {
@@ -184,9 +141,17 @@
   .body-workout-grid,
   .style-grid,
   .body-fields,
-  .body-hero-grid,
   .body-workout-hero {
     grid-template-columns: 1fr;
+  }
+
+  .body-hero-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .body-hero-stat.is-primary {
+    grid-column: 1 / -1;
+    grid-row: auto;
   }
 
   .body-notes-toggle {
@@ -218,69 +183,19 @@
     justify-items: center;
   }
 
-  /* The top bar keeps just the mark, the account pill and the round buttons. */
-  .hero-topline .eyebrow {
-    display: none;
-  }
-
   .auth-user-email {
     max-width: 6.5rem;
   }
 
   .header-buttons,
-  .hero-actions,
+  .desk-actions,
   .auth-status {
     gap: 6px;
-  }
-
-  .view-tabs {
-    --tab-gap: 4px;
-    width: calc(100% - 20px);
-    padding: 5px;
-    border-radius: 24px;
-  }
-
-  .view-tab-indicator {
-    border-radius: 19px;
-  }
-
-  .view-tab {
-    min-height: 46px;
-    gap: 5px;
-    padding: 0 6px;
-    border-radius: 19px;
-    font-size: 0.84rem;
-  }
-
-  .view-tab ion-icon {
-    font-size: 1.08rem;
   }
 
   .auth-tabs {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     justify-items: stretch;
-  }
-
-  #skinViewTab,
-  #bodyViewTab,
-  #styleViewTab {
-    order: initial;
-  }
-
-  .skin-subtabs,
-  .body-subtabs {
-    order: initial;
-    width: 100%;
-    justify-content: center;
-    margin-inline: auto;
-    --sub-pad: 6px;
-  }
-
-  .skin-subtab,
-  .body-subtab {
-    min-height: 36px;
-    padding-inline: 8px;
-    font-size: 0.78rem;
   }
 
   .button,
@@ -481,5 +396,118 @@
   .mobile-icon-button {
     width: 100%;
     height: 42px;
+  }
+}
+
+/*
+ * Phones: the rings move to the top edge, and the index tabs become a
+ * floating bar at the bottom with a black pill under the current section.
+ */
+@media (max-width: 760px) {
+  .page-shell {
+    padding-bottom: calc(120px + env(safe-area-inset-bottom));
+  }
+
+  .notebook {
+    padding: 10px;
+    border-radius: 26px;
+  }
+
+  .notebook.has-tabs {
+    margin-right: 0;
+  }
+
+  .notebook::before {
+    top: -6px;
+    bottom: auto;
+    left: 28px;
+    right: 28px;
+    width: auto;
+    height: 40px;
+    background: var(--rings-top) left center / 40px 40px repeat-x;
+  }
+
+  .notebook-page {
+    padding: 34px 18px 24px;
+    border-radius: 18px;
+  }
+
+  .notebook-intro {
+    gap: 26px;
+    padding-bottom: 26px;
+    margin-bottom: 26px;
+  }
+
+  .view-tabs {
+    --tab-gap: 4px;
+    position: fixed;
+    z-index: 40;
+    top: auto;
+    left: 50%;
+    bottom: max(14px, env(safe-area-inset-bottom));
+    width: min(calc(100% - 20px), 440px);
+    padding: 5px;
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    background: var(--panel-solid);
+    box-shadow: var(--shadow-pop);
+    transform: translateX(-50%);
+  }
+
+  .view-tab-row {
+    position: relative;
+    top: auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--tab-gap);
+  }
+
+  .view-tab-indicator {
+    position: absolute;
+    inset: 0 auto 0 0;
+    display: block;
+    width: calc((100% - 2 * var(--tab-gap)) / 3);
+    border-radius: 19px;
+    background: var(--accent);
+    transform: translateX(calc(var(--view-index, 0) * (100% + var(--tab-gap))));
+    transition: transform var(--nav-motion) var(--ease-spring);
+    pointer-events: none;
+  }
+
+  .view-tab,
+  .view-tab:hover,
+  .view-tab:focus-visible {
+    z-index: 1;
+    flex-direction: row;
+    gap: 5px;
+    height: auto;
+    min-height: 46px;
+    padding: 0 6px;
+    border-radius: 19px;
+    background: transparent;
+    color: var(--muted);
+    font-size: 0.84rem;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .view-tab span {
+    writing-mode: horizontal-tb;
+    letter-spacing: -0.01em;
+  }
+
+  .view-tab.is-active {
+    background: transparent;
+    color: var(--on-accent);
+    box-shadow: none;
+  }
+
+  .section-bar h2 {
+    font-size: 1.55rem;
+  }
+
+  .section-subtabs {
+    width: 100%;
+    min-width: 0;
   }
 }
