@@ -1,7 +1,7 @@
 /*
- * A journal on a desk: paper-white cards, a pale blue binder for the header,
- * ruled lines to write on, sky blue for today, black ink for the main
- * actions, and a few pastel note colors (peach, rose, mint, lavender, sky).
+ * A journal on a desk: a pale blue binder, paper-white pages, ruled lines to
+ * write on, and mostly neutral greys. Black ink marks the main actions; the
+ * only other colors are blue for today and an orange streak flame.
  */
 :root {
   --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo",
@@ -27,13 +27,8 @@
   --today: #3a9ff0;
   --card-border: transparent;
   --pane-border: transparent;
-  /* Note colors: one soft pastel family (peach, rose, mint, lavender, sky). Skin is sky, body mint, style lavender. */
-  --tint-peach: #ffe0c2;
-  --tint-rose: #fbd2dc;
-  --tint-mint: #cdeedb;
-  --tint-lavender: #ddd3fb;
+  /* The highlighter stroke behind "Self". */
   --tint-sky: #cce5f8;
-  --tint-ink: #262a33;
   --paper: #fcfcfd;
   --cover: #cfe5f6;
   --cover-edge: #b4d5ef;
@@ -74,12 +69,7 @@
   --flame: #ff8f5a;
   --today: #5cb2f5;
   --card-border: rgba(255, 246, 230, 0.06);
-  --tint-peach: #46362a;
-  --tint-rose: #472b34;
-  --tint-mint: #1f3d31;
-  --tint-lavender: #342c4a;
   --tint-sky: #1f3647;
-  --tint-ink: #eef1f6;
   --paper: #202328;
   --cover: #233a4f;
   --cover-edge: #2c4a64;
@@ -386,26 +376,23 @@ h3 {
   min-height: 36px;
   padding: 0 14px 0 11px;
   border-radius: 999px;
-  background: var(--glance-tint, var(--tint-sky));
-  color: var(--tint-ink);
+  background: var(--fill);
+  color: var(--text-soft);
   font-family: var(--font-display);
   font-size: 0.84rem;
 }
 
 .hero-glance strong {
+  color: var(--text);
   font-weight: 600;
-}
-
-.hero-glance .is-streak {
-  --glance-tint: var(--tint-peach);
 }
 
 .hero-glance .is-streak ion-icon {
   color: var(--flame);
 }
 
-.hero-glance .is-weight {
-  --glance-tint: var(--tint-mint);
+.hero-glance .is-week ion-icon {
+  color: var(--today);
 }
 
 /* Today's note: a frosted card in soft sky, blush and mint. */
@@ -577,8 +564,8 @@ h3 {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--tint-lavender);
-  color: var(--tint-ink);
+  background: var(--fill);
+  color: var(--text);
 }
 
 .auth-user-copy {

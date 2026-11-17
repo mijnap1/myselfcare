@@ -11,6 +11,7 @@ import { useJournal } from "../JournalContext";
 import { ImageDropZone } from "../shared/ImageDropZone";
 import { hasImage, StoredImage } from "../shared/StoredImage";
 import { commitImageDraft, useImageDraft } from "../shared/useImageDraft";
+import { InlineNote } from "../shared/InlineNote";
 import { useRemoveWithUndo } from "../shared/useRemoveWithUndo";
 
 const EMPTY_FORM = { title: "", youtubeUrl: "", note: "" };
@@ -35,6 +36,15 @@ export function WorkoutSection() {
     image.loadExisting(workout);
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
     titleInputRef.current?.focus();
+  };
+
+  const saveNote = (id: string, note: string) => {
+    update((draft) => {
+      const target = draft.bodyProgress.workouts.find((entry) => entry.id === id);
+      if (target) {
+        target.note = note;
+      }
+    });
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -118,7 +128,7 @@ export function WorkoutSection() {
           <label className="body-field">
             <span>YouTube 링크</span>
             <input
-              type="url"
+              type="text"
               inputMode="url"
               placeholder="https://www.youtube.com/watch?v=..."
               value={form.youtubeUrl}
@@ -189,11 +199,11 @@ export function WorkoutSection() {
                           <StoredImage image={workout} className="body-workout-item-image" alt={workout.title} />
                           <div className="body-workout-item-copy">
                             <h3>{workout.title || "이름 없는 운동"}</h3>
-                            {workout.note ? (
-                              <p className="body-workout-note">{workout.note}</p>
-                            ) : (
-                              <p className="body-workout-note is-muted">메모 없음</p>
-                            )}
+                            <InlineNote
+                              className="body-workout-note"
+                              value={workout.note}
+                              onSave={(note) => saveNote(workout.id, note)}
+                            />
                           </div>
                           <div className="body-workout-actions">
                             {link && (

@@ -11,6 +11,7 @@ import { useJournal } from "../JournalContext";
 import { ImageDropZone } from "../shared/ImageDropZone";
 import { hasImage, StoredImage } from "../shared/StoredImage";
 import { commitImageDraft, useImageDraft } from "../shared/useImageDraft";
+import { InlineNote } from "../shared/InlineNote";
 import { useRemoveWithUndo } from "../shared/useRemoveWithUndo";
 
 const EMPTY_FORM = { title: "", link: "", note: "" };
@@ -35,6 +36,15 @@ export function StyleBoardSection() {
     image.loadExisting(item);
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
     titleInputRef.current?.focus();
+  };
+
+  const saveNote = (id: string, note: string) => {
+    update((draft) => {
+      const target = draft.styleBoard.items.find((entry) => entry.id === id);
+      if (target) {
+        target.note = note;
+      }
+    });
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -129,7 +139,7 @@ export function StyleBoardSection() {
               <label className="body-field">
                 <span>링크</span>
                 <input
-                  type="url"
+                  type="text"
                   inputMode="url"
                   placeholder="https://..."
                   value={form.link}
@@ -202,11 +212,11 @@ export function StyleBoardSection() {
                             <StoredImage image={item} className="style-item-image" alt={item.title} />
                             <div className="style-item-copy">
                               <h3>{item.title || "이름 없는 스타일"}</h3>
-                              {item.note ? (
-                                <p className="style-item-note">{item.note}</p>
-                              ) : (
-                                <p className="style-item-note is-muted">메모 없음</p>
-                              )}
+                              <InlineNote
+                              className="style-item-note"
+                              value={item.note}
+                              onSave={(note) => saveNote(item.id, note)}
+                            />
                             </div>
                             <div className="style-item-actions">
                               {link && (

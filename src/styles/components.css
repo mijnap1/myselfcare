@@ -1,6 +1,6 @@
 /*
- * Index tabs: dividers sticking out of the notebook's right edge, one color
- * per section. They sit between the cover and the page (z-index -1 inside
+ * Index tabs: paper dividers sticking out of the notebook's right edge; the
+ * open section's tab is page-white and sticks out further. They sit between the cover and the page (z-index -1 inside
  * the notebook), and follow you down the page. On phones they become a
  * floating bar at the bottom (see responsive.css).
  */
@@ -27,7 +27,6 @@
 }
 
 .view-tab {
-  --tab-tint: var(--tint-sky);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -39,8 +38,8 @@
   padding: 0 0 0 16px;
   border: 0;
   border-radius: 0 18px 18px 0;
-  background: color-mix(in srgb, var(--tab-tint) 55%, var(--paper));
-  color: color-mix(in srgb, var(--tint-ink) 70%, transparent);
+  background: color-mix(in srgb, var(--cover) 55%, var(--paper));
+  color: var(--muted);
   cursor: pointer;
   font-family: var(--font-display);
   font-size: 0.9rem;
@@ -48,14 +47,6 @@
   transform: translateX(-12px);
   transition: transform 420ms var(--ease-spring), background-color var(--motion-medium) var(--ease-out),
     color var(--motion-medium) var(--ease-out), box-shadow var(--motion-medium) var(--ease-out);
-}
-
-.view-tab.is-body {
-  --tab-tint: var(--tint-mint);
-}
-
-.view-tab.is-style {
-  --tab-tint: var(--tint-lavender);
 }
 
 .view-tab span {
@@ -78,15 +69,14 @@
 }
 
 .view-tab.is-active {
-  background: var(--tab-tint);
-  color: var(--tint-ink);
+  background: var(--paper);
+  color: var(--text);
   transform: none;
   box-shadow: 8px 10px 20px -14px rgba(30, 60, 100, 0.55);
 }
 
 /* Each section opens with its name, and its pages as a switch. */
 .section-bar {
-  --bar-tint: var(--tint-sky);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -94,14 +84,6 @@
   gap: 16px 24px;
   margin-bottom: 24px;
   animation: view-enter 360ms var(--ease-out);
-}
-
-.section-bar[data-view="body"] {
-  --bar-tint: var(--tint-mint);
-}
-
-.section-bar[data-view="style"] {
-  --bar-tint: var(--tint-lavender);
 }
 
 .section-bar-title {
@@ -117,8 +99,8 @@
   width: 50px;
   height: 50px;
   border-radius: 16px;
-  background: var(--bar-tint);
-  color: var(--tint-ink);
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 .section-bar-icon ion-icon {
@@ -662,12 +644,11 @@
   justify-content: space-between;
   grid-row: span 2;
   padding: 18px;
-  background: var(--tint-mint);
-  color: var(--tint-ink);
+  background: var(--fill);
 }
 
 .body-hero-stat.is-primary .body-hero-stat-icon {
-  color: var(--tint-ink);
+  color: var(--text);
 }
 
 .body-hero-stat.is-primary strong {
@@ -677,7 +658,7 @@
 }
 
 .body-hero-stat.is-primary .summary-stat-label {
-  color: var(--tint-ink);
+  color: var(--text);
 }
 
 .body-hero-note {
@@ -1811,7 +1792,7 @@
 }
 
 .today-step.is-filled {
-  background: var(--tint-sky);
+  background: var(--fill-strong);
 }
 
 .today-step.is-filled .today-step-icon {
@@ -1821,7 +1802,7 @@
 }
 
 .today-step.is-filled small {
-  color: var(--tint-ink);
+  color: var(--text);
 }
 
 .today-step:active {
@@ -3200,8 +3181,8 @@
 }
 
 /*
- * Streak card: grey until a streak starts, then a soft frosted card (like
- * today's note) that deepens with each level. The flame sits in a ring that fills toward
+ * Streak card: a quiet grey card; the flame turns orange once a streak
+ * starts. The flame sits in a ring that fills toward
  * the next milestone, the week fills in on a cream strip, and earned
  * milestones show as badges. Checking today sends a ripple out from the flame.
  */
@@ -3224,48 +3205,6 @@
   background: var(--panel-2);
   color: var(--streak-ink);
   transition: background 600ms var(--ease-out);
-}
-
-.streak-card:not([data-tier="0"]) {
-  --streak-ink: #1d2027;
-  --streak-soft: rgba(29, 32, 39, 0.66);
-  --streak-faint: rgba(29, 32, 39, 0.13);
-  --streak-glass: rgba(255, 255, 255, 0.62);
-  --streak-a: #e4eefb;
-  --streak-b: #f4eaf3;
-  --streak-c: rgba(238, 245, 216, 0.95);
-  background:
-    radial-gradient(90% 90% at 100% 100%, var(--streak-c), transparent 60%),
-    linear-gradient(140deg, var(--streak-a), var(--streak-b));
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.8), 0 18px 36px -24px rgba(40, 80, 130, 0.55);
-}
-
-.streak-card[data-tier="2"] {
-  --streak-a: #d8e7fb;
-  --streak-b: #f6e2ee;
-}
-
-.streak-card[data-tier="3"] {
-  --streak-a: #cde0fb;
-  --streak-b: #f8dde6;
-  --streak-c: rgba(255, 239, 200, 0.95);
-}
-
-.streak-card[data-tier="4"] {
-  --streak-a: #c6dbff;
-  --streak-b: #f1d3f0;
-  --streak-c: rgba(255, 228, 176, 0.95);
-}
-
-[data-theme="dark"] .streak-card:not([data-tier="0"]) {
-  --streak-ink: var(--text);
-  --streak-soft: var(--text-soft);
-  --streak-faint: var(--line-strong);
-  --streak-glass: rgba(255, 255, 255, 0.08);
-  --streak-a: #263346;
-  --streak-b: #33293a;
-  --streak-c: rgba(80, 96, 60, 0.45);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 .streak-main {
@@ -3619,64 +3558,31 @@
   }
 }
 
-/*
- * Sticky notes: saved outfits, workouts and meals are pastel cards that
- * cycle through the note colors, like a board of notes. Section labels are
- * small tags in their tab's color (skin sky, body mint, style lavender).
- */
+/* Section tags are small grey pills; saved outfits, workouts and meals are grey tiles. */
 .section-kicker,
 .section-label {
   padding: 4px 11px 4px 9px;
   border-radius: 999px;
-  background: var(--kicker-tint, var(--tint-sky));
-  color: var(--tint-ink);
+  background: var(--fill);
+  color: var(--text-soft);
   font-size: 0.78rem;
-}
-
-.body-view {
-  --kicker-tint: var(--tint-mint);
-}
-
-.style-view {
-  --kicker-tint: var(--tint-lavender);
 }
 
 .body-workout-item,
 .style-item-card {
-  --note-tint: var(--tint-peach);
   border: 0;
   border-radius: 22px;
   padding: 14px;
-  background: var(--note-tint);
-  color: var(--tint-ink);
+  background: var(--fill);
+  color: var(--text);
   transition: transform 320ms var(--ease-spring), box-shadow 320ms var(--ease-out);
-}
-
-.body-workout-item:nth-child(5n + 2),
-.style-item-card:nth-child(5n + 2) {
-  --note-tint: var(--tint-rose);
-}
-
-.body-workout-item:nth-child(5n + 3),
-.style-item-card:nth-child(5n + 3) {
-  --note-tint: var(--tint-mint);
-}
-
-.body-workout-item:nth-child(5n + 4),
-.style-item-card:nth-child(5n + 4) {
-  --note-tint: var(--tint-lavender);
-}
-
-.body-workout-item:nth-child(5n + 5),
-.style-item-card:nth-child(5n + 5) {
-  --note-tint: var(--tint-sky);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .body-workout-item:hover,
   .style-item-card:hover {
-    transform: translateY(-2px) rotate(-0.3deg);
-    box-shadow: 0 16px 30px -20px rgba(48, 38, 22, 0.45);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 30px -22px rgba(30, 42, 64, 0.45);
   }
 }
 
@@ -3687,33 +3593,70 @@
 }
 
 .body-workout-note,
-.style-item-note,
-.body-workout-note.is-muted,
-.style-item-note.is-muted {
-  color: color-mix(in srgb, var(--tint-ink) 66%, transparent);
+.style-item-note {
+  color: var(--text-soft);
 }
 
 .body-workout-item .button,
 .style-item-card .button {
-  background: rgba(255, 255, 255, 0.55);
-  color: var(--tint-ink);
+  background: var(--panel-solid);
+  color: var(--text);
 }
 
 .body-workout-item .button:hover,
 .body-workout-item .button:focus-visible,
 .style-item-card .button:hover,
 .style-item-card .button:focus-visible {
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--panel);
+  box-shadow: var(--shadow);
 }
 
-[data-theme="dark"] .body-workout-item .button,
-[data-theme="dark"] .style-item-card .button {
-  background: rgba(255, 255, 255, 0.08);
+/* A memo on a tile is edited in place (see InlineNote). */
+.inline-note {
+  display: block;
+  width: 100%;
+  margin: 6px 0 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  line-height: 1.55;
+  text-align: left;
+  white-space: pre-wrap;
+  cursor: text;
 }
 
-[data-theme="dark"] .body-workout-item .button:hover,
-[data-theme="dark"] .style-item-card .button:hover {
-  background: rgba(255, 255, 255, 0.14);
+.inline-note.is-muted {
+  color: var(--muted);
+}
+
+.inline-note:hover {
+  color: var(--text);
+}
+
+.inline-note:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.inline-note-editor {
+  display: block;
+  width: 100%;
+  margin: 6px 0 0;
+  padding: 8px 10px;
+  border: 1.5px solid var(--today);
+  border-radius: 10px;
+  background: var(--panel-solid);
+  color: var(--text);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  resize: vertical;
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.inline-note-editor:focus {
+  outline: none;
 }
 
 /* Notes sit in a grid of tiles: photo, title and note, and round buttons in the corner (edit is ink). */
@@ -3786,13 +3729,13 @@
 
 .body-workout-item .body-workout-edit,
 .style-item-card .style-item-edit {
-  background: #1d1b18;
-  color: #ffffff;
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 .body-workout-item .body-workout-edit:hover,
 .body-workout-item .body-workout-edit:focus-visible,
 .style-item-card .style-item-edit:hover,
 .style-item-card .style-item-edit:focus-visible {
-  background: #3b3732;
+  background: var(--accent-strong);
 }

@@ -11,6 +11,7 @@ import { useJournal } from "../JournalContext";
 import { ImageDropZone } from "../shared/ImageDropZone";
 import { hasImage, StoredImage } from "../shared/StoredImage";
 import { commitImageDraft, useImageDraft } from "../shared/useImageDraft";
+import { InlineNote } from "../shared/InlineNote";
 import { useRemoveWithUndo } from "../shared/useRemoveWithUndo";
 
 const EMPTY_FORM = { title: "", link: "", note: "" };
@@ -35,6 +36,15 @@ export function MealSection() {
     image.loadExisting(meal);
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
     titleInputRef.current?.focus();
+  };
+
+  const saveNote = (id: string, note: string) => {
+    update((draft) => {
+      const target = draft.bodyProgress.meals.find((entry) => entry.id === id);
+      if (target) {
+        target.note = note;
+      }
+    });
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -118,7 +128,7 @@ export function MealSection() {
           <label className="body-field">
             <span>레시피 링크</span>
             <input
-              type="url"
+              type="text"
               inputMode="url"
               placeholder="https://..."
               value={form.link}
@@ -189,11 +199,11 @@ export function MealSection() {
                           <StoredImage image={meal} className="body-workout-item-image" alt={meal.title} />
                           <div className="body-workout-item-copy">
                             <h3>{meal.title || "이름 없는 메뉴"}</h3>
-                            {meal.note ? (
-                              <p className="body-workout-note">{meal.note}</p>
-                            ) : (
-                              <p className="body-workout-note is-muted">메모 없음</p>
-                            )}
+                            <InlineNote
+                              className="body-workout-note"
+                              value={meal.note}
+                              onSave={(note) => saveNote(meal.id, note)}
+                            />
                           </div>
                           <div className="body-workout-actions">
                             {link && (
