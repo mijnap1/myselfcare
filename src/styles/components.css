@@ -1,7 +1,7 @@
 /*
- * Floating section nav. One indicator slides between the main tabs and
- * another between the sub-tabs. The sub-tab row collapses with a height
- * transition (grid 1fr → 0fr) instead of display:none.
+ * Floating section nav: a white pill bar where a black pill slides under the
+ * current section, and a quieter grey pill under the current sub-tab. The
+ * sub-tab row collapses with a height transition (grid 1fr → 0fr).
  */
 .view-tabs {
   --tab-gap: 4px;
@@ -12,14 +12,13 @@
   z-index: 40;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  width: min(calc(100% - 32px), 520px);
-  padding: 6px 10px;
-  border: 1px solid var(--pane-border);
-  border-radius: var(--radius-lg);
-  background: var(--panel);
+  width: min(calc(100% - 32px), 500px);
+  padding: 6px;
+  border: 1px solid var(--card-border);
+  border-radius: 26px;
+  background: var(--panel-solid);
   box-shadow: var(--shadow-pop);
   transform: translateX(-50%);
-  backdrop-filter: blur(22px) saturate(1.2);
 }
 
 .view-tab-row {
@@ -31,11 +30,10 @@
 
 .view-tab-indicator {
   position: absolute;
-  inset: auto auto 6px 0;
+  inset: 0 auto 0 0;
   width: calc((100% - 2 * var(--tab-gap)) / 3);
-  height: 1.5px;
-  /* A short ink underline under the current section's label. */
-  background: linear-gradient(90deg, transparent 30%, var(--text) 30% 70%, transparent 70%);
+  border-radius: 20px;
+  background: var(--accent);
   transform: translateX(calc(var(--view-index, 0) * (100% + var(--tab-gap))));
   transition: transform var(--nav-motion) var(--ease-spring);
   pointer-events: none;
@@ -48,24 +46,22 @@
   align-items: center;
   justify-content: center;
   gap: 7px;
-  min-height: 44px;
+  min-height: 46px;
   padding: 0 8px;
   border: 0;
-  border-radius: var(--radius-md);
+  border-radius: 20px;
   background: transparent;
   color: var(--muted);
   cursor: pointer;
-  font-family: var(--font-mono);
-  font-size: 0.76rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  transition: background-color var(--motion-fast) var(--ease-out), color var(--nav-motion) var(--ease-out),
-    transform var(--motion-fast) var(--ease-out);
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transition: color var(--nav-motion) var(--ease-out), transform var(--motion-fast) var(--ease-out);
 }
 
 .view-tab ion-icon {
-  display: none;
+  font-size: 1.05rem;
 }
 
 .view-tab:hover,
@@ -82,11 +78,11 @@
 .view-tab.is-active:hover,
 .view-tab.is-active:focus-visible {
   background: transparent;
-  color: var(--text);
+  color: var(--on-accent);
 }
 
 .view-tab.is-active:focus-visible {
-  box-shadow: 0 0 0 2px var(--focus-ring);
+  box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 .view-subtabs-shell {
@@ -128,7 +124,7 @@
   bottom: 0;
   left: 0;
   width: calc((100% - var(--sub-gap)) / 2);
-  border-radius: var(--radius-sm);
+  border-radius: 999px;
   background: var(--fill);
   transform: translateX(calc(var(--sub-index, 0) * (100% + var(--sub-gap))));
   transition: transform var(--nav-motion) var(--ease-spring);
@@ -142,18 +138,15 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-height: 38px;
+  gap: 6px;
+  min-height: 36px;
   padding: 0 12px;
   border: 0;
-  border-radius: 12px;
+  border-radius: 999px;
   background: transparent;
   color: var(--muted);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 0.82rem;
+  font-weight: 600;
   cursor: pointer;
   transition: color var(--nav-motion) var(--ease-out), transform var(--motion-fast) var(--ease-out);
 }
@@ -170,12 +163,12 @@
 
 .skin-subtab:focus-visible,
 .body-subtab:focus-visible {
-  box-shadow: 0 0 0 2px var(--focus-ring);
+  box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 .skin-subtab ion-icon,
 .body-subtab ion-icon {
-  display: none;
+  font-size: 0.95rem;
 }
 
 @keyframes subtabs-swap {
@@ -256,7 +249,7 @@
 
 .skin-product-field span {
   color: var(--text-soft);
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: 600;
 }
 
@@ -746,7 +739,7 @@
 
 .body-field span {
   color: var(--text-soft);
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: 600;
 }
 
@@ -885,7 +878,7 @@
 
 .body-calendar-weekdays span {
   color: var(--muted);
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   text-align: center;
 }
 
@@ -1011,7 +1004,7 @@
 
 .body-history-date {
   color: var(--muted);
-  font-size: 0.74rem;
+  font-size: 0.8rem;
 }
 
 .body-history-weight {
@@ -1572,7 +1565,7 @@
   width: fit-content;
   margin: 0;
   color: var(--muted);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
 }
 
 .section-label ion-icon,
@@ -1622,7 +1615,7 @@
 
 .skin-video-field span {
   color: var(--text-soft);
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: 700;
 }
 
@@ -1773,9 +1766,8 @@
 .journal-summary {
   display: grid;
   gap: 14px;
-  padding: 18px;
+  padding: 22px;
   margin-bottom: 14px;
-  background: color-mix(in srgb, var(--panel) 88%, var(--panel-2) 12%);
 }
 
 .summary-overview {
@@ -1822,12 +1814,12 @@
 
 .today-step small {
   color: var(--muted);
-  font-size: 0.74rem;
+  font-size: 0.8rem;
   font-weight: 600;
 }
 
 .today-step.is-filled {
-  background: var(--accent-soft);
+  background: var(--tint-sky);
 }
 
 .today-step.is-filled .today-step-icon {
@@ -1837,7 +1829,7 @@
 }
 
 .today-step.is-filled small {
-  color: var(--accent);
+  color: var(--tint-ink);
 }
 
 .today-step:active {
@@ -1853,7 +1845,7 @@
 .summary-stat-label {
   margin: 0;
   color: var(--muted);
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: 600;
 }
 
@@ -1896,7 +1888,7 @@
 
 .summary-progress-card span {
   color: var(--muted);
-  font-size: 0.62rem;
+  font-size: 0.8rem;
 }
 
 .summary-meta {
@@ -2029,7 +2021,7 @@
   padding: 14px 14px 18px;
   border-bottom: 1px solid var(--line);
   text-align: left;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--muted);
 }
@@ -2045,7 +2037,7 @@
 }
 
 .routine-table tbody tr.today-row {
-  background: var(--accent-soft);
+  background: color-mix(in srgb, var(--today) 7%, transparent);
 }
 
 .routine-table tbody tr:last-child td {
@@ -2085,10 +2077,10 @@
   height: 26px;
   padding: 0 8px;
   border: 0;
-  border-radius: 6px;
-  background: var(--accent-soft);
-  color: var(--accent);
-  font-size: 0.66rem;
+  border-radius: 999px;
+  background: var(--today);
+  color: #ffffff;
+  font-size: 0.8rem;
   font-weight: 700;
 }
 
@@ -2549,7 +2541,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--muted);
 }
@@ -2780,7 +2772,7 @@
   margin: 0;
   padding: 6px 10px 2px;
   color: var(--muted);
-  font-size: 0.74rem;
+  font-size: 0.8rem;
   font-weight: 700;
 }
 
@@ -3219,22 +3211,72 @@
 }
 
 /*
- * Streak card: the flame sits in a ring that fills toward the next milestone,
- * the week fills in day by day, and earned milestones show as badges. Checking
- * today sends a ripple out from the flame and bumps the count.
+ * Streak card: grey until a streak starts, then a soft frosted card (like
+ * today's note) that deepens with each level. The flame sits in a ring that fills toward
+ * the next milestone, the week fills in on a cream strip, and earned
+ * milestones show as badges. Checking today sends a ripple out from the flame.
  */
 .summary-overview {
   align-items: stretch;
 }
 
 .streak-card {
+  --streak-ink: var(--text);
+  --streak-soft: var(--text-soft);
+  --streak-faint: var(--line-strong);
+  --streak-glass: var(--panel-solid);
   position: relative;
   display: grid;
   gap: 16px;
   width: min(100%, 380px);
   padding: 20px;
-  border-radius: var(--radius-lg);
-  background: var(--fill);
+  overflow: hidden;
+  border-radius: 24px;
+  background: var(--panel-2);
+  color: var(--streak-ink);
+  transition: background 600ms var(--ease-out);
+}
+
+.streak-card:not([data-tier="0"]) {
+  --streak-ink: #1d2027;
+  --streak-soft: rgba(29, 32, 39, 0.66);
+  --streak-faint: rgba(29, 32, 39, 0.13);
+  --streak-glass: rgba(255, 255, 255, 0.62);
+  --streak-a: #e4eefb;
+  --streak-b: #f4eaf3;
+  --streak-c: rgba(238, 245, 216, 0.95);
+  background:
+    radial-gradient(90% 90% at 100% 100%, var(--streak-c), transparent 60%),
+    linear-gradient(140deg, var(--streak-a), var(--streak-b));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.8), 0 18px 36px -24px rgba(40, 80, 130, 0.55);
+}
+
+.streak-card[data-tier="2"] {
+  --streak-a: #d8e7fb;
+  --streak-b: #f6e2ee;
+}
+
+.streak-card[data-tier="3"] {
+  --streak-a: #cde0fb;
+  --streak-b: #f8dde6;
+  --streak-c: rgba(255, 239, 200, 0.95);
+}
+
+.streak-card[data-tier="4"] {
+  --streak-a: #c6dbff;
+  --streak-b: #f1d3f0;
+  --streak-c: rgba(255, 228, 176, 0.95);
+}
+
+[data-theme="dark"] .streak-card:not([data-tier="0"]) {
+  --streak-ink: var(--text);
+  --streak-soft: var(--text-soft);
+  --streak-faint: var(--line-strong);
+  --streak-glass: rgba(255, 255, 255, 0.08);
+  --streak-a: #263346;
+  --streak-b: #33293a;
+  --streak-c: rgba(80, 96, 60, 0.45);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 .streak-main {
@@ -3248,8 +3290,8 @@
   position: relative;
   display: grid;
   place-items: center;
-  width: 64px;
-  height: 64px;
+  width: 66px;
+  height: 66px;
 }
 
 .streak-ring {
@@ -3266,11 +3308,11 @@
 }
 
 .streak-ring-track {
-  stroke: var(--line);
+  stroke: var(--streak-faint);
 }
 
 .streak-ring-fill {
-  stroke: var(--accent);
+  stroke: var(--today);
   stroke-linecap: round;
   transition: stroke-dashoffset 900ms var(--ease-out);
 }
@@ -3278,27 +3320,33 @@
 .streak-flame {
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  background: var(--panel-solid);
+  background: var(--streak-glass);
   color: var(--muted);
   animation: flame-ignite 520ms var(--ease-spring);
 }
 
 .streak-flame ion-icon {
-  font-size: 1.45rem;
+  font-size: 1.5rem;
 }
 
 .streak-card:not([data-tier="0"]) .streak-flame {
+  background: #ffffff;
   color: var(--flame);
+  box-shadow: 0 6px 14px -6px rgba(255, 110, 40, 0.5);
+}
+
+.streak-card:not([data-tier="0"]) .streak-flame ion-icon {
+  animation: flame-flicker 2.6s ease-in-out infinite;
 }
 
 .streak-ripple {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  border: 2px solid var(--accent);
+  border: 2px solid var(--streak-ink);
   opacity: 0;
   pointer-events: none;
   animation: streak-ripple 900ms var(--ease-out);
@@ -3313,54 +3361,62 @@
   align-items: center;
   gap: 6px;
   margin: 0 0 2px;
-  color: var(--muted);
-  font-size: 0.82rem;
+  color: var(--streak-soft);
+  font-size: 0.84rem;
   font-weight: 600;
 }
 
 .streak-level span {
-  color: var(--accent);
-  font-weight: 700;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--streak-glass);
+  color: var(--streak-ink);
+  font-family: var(--font-display);
+  font-weight: 600;
 }
 
 .streak-count {
   display: flex;
   align-items: baseline;
-  gap: 4px;
+  gap: 5px;
   min-width: 0;
 }
 
 .streak-number {
-  font-size: 2.3rem;
-  font-weight: 700;
-  line-height: 1.1;
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  font-weight: 600;
+  line-height: 1.05;
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
   animation: streak-bump 520ms var(--ease-spring);
 }
 
 .streak-count span {
-  color: var(--text-soft);
+  color: var(--streak-soft);
   font-size: 0.95rem;
   font-weight: 600;
 }
 
 .streak-status {
   margin: -4px 0 0;
-  color: var(--text-soft);
+  color: var(--streak-soft);
   font-size: 0.9rem;
   line-height: 1.5;
 }
 
+/* The week on a cream strip: ink checks for done days, a blue dot for today. */
 .streak-week {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 4px;
   margin: 0;
   padding: 12px 8px;
-  border-radius: var(--radius-md);
-  background: var(--panel-solid);
+  border-radius: 18px;
+  background: var(--paper);
+  color: var(--text);
   list-style: none;
+  box-shadow: 0 8px 20px -14px rgba(40, 80, 130, 0.4);
 }
 
 .streak-day {
@@ -3371,7 +3427,7 @@
 
 .streak-day small {
   color: var(--muted);
-  font-size: 0.72rem;
+  font-size: 0.76rem;
   font-weight: 600;
 }
 
@@ -3396,10 +3452,12 @@
 }
 
 .streak-day.is-today .streak-day-dot {
-  box-shadow: inset 0 0 0 2px var(--accent);
+  box-shadow: inset 0 0 0 2px var(--today);
 }
 
 .streak-day.is-today.is-done .streak-day-dot {
+  background: var(--today);
+  color: #ffffff;
   box-shadow: none;
 }
 
@@ -3408,13 +3466,13 @@
 }
 
 .streak-day.is-today small {
-  color: var(--accent);
+  color: var(--today);
   font-weight: 700;
 }
 
 .streak-day.is-upcoming .streak-day-dot {
   background: transparent;
-  box-shadow: inset 0 0 0 1.5px var(--line);
+  box-shadow: inset 0 0 0 1.5px var(--line-strong);
 }
 
 .streak-stats {
@@ -3427,18 +3485,18 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  color: var(--text-soft);
+  color: var(--streak-soft);
   font-size: 0.82rem;
   font-weight: 500;
 }
 
 .streak-stats strong {
-  color: var(--text);
+  color: var(--streak-ink);
   font-weight: 700;
 }
 
 .streak-stats ion-icon {
-  color: var(--muted);
+  color: var(--streak-soft);
   font-size: 0.95rem;
 }
 
@@ -3461,30 +3519,36 @@
   box-sizing: content-box;
   padding: 8px;
   border-radius: 50%;
-  background: var(--panel-solid);
-  color: var(--line-strong);
+  background: var(--streak-glass);
+  color: var(--streak-faint);
   font-size: 0.85rem;
   transition: transform 260ms var(--ease-spring);
 }
 
 .streak-badge small {
-  color: var(--muted);
-  font-size: 0.68rem;
+  color: var(--streak-soft);
+  font-size: 0.72rem;
   font-weight: 600;
 }
 
 .streak-badge.is-earned ion-icon {
-  background: var(--accent);
+  background: var(--streak-ink);
+  color: #fff6e6;
+}
+
+.streak-card[data-tier="0"] .streak-badge.is-earned ion-icon,
+[data-theme="dark"] .streak-badge.is-earned ion-icon {
   color: var(--on-accent);
 }
 
 .streak-badge.is-earned small {
-  color: var(--text);
+  color: var(--streak-ink);
 }
 
 .streak-badge.is-next ion-icon {
-  background: var(--accent-soft);
-  color: var(--accent);
+  background: var(--streak-glass);
+  color: var(--streak-ink);
+  box-shadow: inset 0 0 0 1.5px var(--streak-ink);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -3549,10 +3613,10 @@
 @keyframes today-pulse {
   0%,
   100% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 40%, transparent), inset 0 0 0 2px var(--accent);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--today) 45%, transparent), inset 0 0 0 2px var(--today);
   }
   50% {
-    box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 0%, transparent), inset 0 0 0 2px var(--accent);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--today) 0%, transparent), inset 0 0 0 2px var(--today);
   }
 }
 
@@ -3564,4 +3628,182 @@
   .streak-card {
     width: 100%;
   }
+}
+
+/*
+ * Sticky notes: saved outfits, workouts and meals are pastel cards that
+ * cycle through the note colors, like a board of notes. Section labels are
+ * small tags in their tab's color (skin sky, body lime, style lavender).
+ */
+.section-kicker,
+.section-label {
+  padding: 4px 11px 4px 9px;
+  border-radius: 999px;
+  background: var(--kicker-tint, var(--tint-sky));
+  color: var(--tint-ink);
+  font-size: 0.78rem;
+}
+
+.body-view {
+  --kicker-tint: var(--tint-lime);
+}
+
+.style-view {
+  --kicker-tint: var(--tint-lavender);
+}
+
+.body-workout-item,
+.style-item-card {
+  --note-tint: var(--tint-apricot);
+  border: 0;
+  border-radius: 22px;
+  padding: 14px;
+  background: var(--note-tint);
+  color: var(--tint-ink);
+  transition: transform 320ms var(--ease-spring), box-shadow 320ms var(--ease-out);
+}
+
+.body-workout-item:nth-child(5n + 2),
+.style-item-card:nth-child(5n + 2) {
+  --note-tint: var(--tint-coral);
+}
+
+.body-workout-item:nth-child(5n + 3),
+.style-item-card:nth-child(5n + 3) {
+  --note-tint: var(--tint-lime);
+}
+
+.body-workout-item:nth-child(5n + 4),
+.style-item-card:nth-child(5n + 4) {
+  --note-tint: var(--tint-lavender);
+}
+
+.body-workout-item:nth-child(5n + 5),
+.style-item-card:nth-child(5n + 5) {
+  --note-tint: var(--tint-sky);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .body-workout-item:hover,
+  .style-item-card:hover {
+    transform: translateY(-2px) rotate(-0.3deg);
+    box-shadow: 0 16px 30px -20px rgba(48, 38, 22, 0.45);
+  }
+}
+
+.body-workout-item-image,
+.style-item-image {
+  border: 0;
+  border-radius: 14px;
+}
+
+.body-workout-note,
+.style-item-note,
+.body-workout-note.is-muted,
+.style-item-note.is-muted {
+  color: color-mix(in srgb, var(--tint-ink) 66%, transparent);
+}
+
+.body-workout-item .button,
+.style-item-card .button {
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--tint-ink);
+}
+
+.body-workout-item .button:hover,
+.body-workout-item .button:focus-visible,
+.style-item-card .button:hover,
+.style-item-card .button:focus-visible {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+[data-theme="dark"] .body-workout-item .button,
+[data-theme="dark"] .style-item-card .button {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .body-workout-item .button:hover,
+[data-theme="dark"] .style-item-card .button:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* Notes sit in a grid of tiles: photo, title and note, and round buttons in the corner (edit is ink). */
+.body-workout-group-list,
+.style-group-list {
+  grid-template-columns: repeat(auto-fill, minmax(min(190px, 100%), 1fr));
+  gap: 12px;
+}
+
+.body-workout-item,
+.body-workout-item.has-no-image,
+.style-item-card,
+.style-item-card.has-no-image {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  min-height: 176px;
+  padding: 16px;
+}
+
+.body-workout-item-image,
+.style-item-image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+}
+
+.body-workout-item-copy h3,
+.style-item-copy h3 {
+  font-size: 1.02rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.body-workout-note,
+.style-item-note {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  font-size: 0.88rem;
+}
+
+.body-workout-actions,
+.style-item-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: auto;
+}
+
+.body-workout-actions .button,
+.style-item-actions .button {
+  width: 34px;
+  min-width: 0;
+  min-height: 34px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.body-workout-actions .button > span,
+.style-item-actions .button > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.body-workout-item .body-workout-edit,
+.style-item-card .style-item-edit {
+  background: #1d1b18;
+  color: #ffffff;
+}
+
+.body-workout-item .body-workout-edit:hover,
+.body-workout-item .body-workout-edit:focus-visible,
+.style-item-card .style-item-edit:hover,
+.style-item-card .style-item-edit:focus-visible {
+  background: #3b3732;
 }

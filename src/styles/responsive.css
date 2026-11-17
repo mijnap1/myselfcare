@@ -17,12 +17,42 @@
   }
 
   .hero {
-    grid-template-columns: 1fr;
-    padding: 24px;
+    gap: 26px;
+    padding: 0 2px 24px;
+  }
+
+  /* Stacked pages, bound along the top edge instead. */
+  .notebook.is-spread {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 0 auto;
+  }
+
+  .notebook-rings {
+    flex-direction: row;
+    padding: 0 18px;
+  }
+
+  .notebook-ring {
+    width: 12px;
+    height: 34px;
+    background: linear-gradient(90deg, #f6f8fb, #b9c2cf 55%, #e6eaf0);
+  }
+
+  [data-theme="dark"] .notebook-ring {
+    background: linear-gradient(90deg, #9aa4b3, #4d5562 55%, #7d8796);
+  }
+
+  .notebook.is-spread .notebook-left,
+  .notebook-right {
+    background: var(--paper);
+  }
+
+  .notebook-page {
+    padding: 22px 22px 26px;
   }
 
   h1 {
-    font-size: 3rem;
+    font-size: 3.6rem;
   }
 
   .skin-video-form-grid,
@@ -46,39 +76,6 @@
 
   .hero-main {
     max-width: none;
-  }
-
-  .hero-actions,
-  .auth-status {
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
-
-  .auth-status {
-    flex-wrap: wrap;
-  }
-
-  .auth-user {
-    width: 100%;
-  }
-
-  .header-buttons {
-    justify-content: center;
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    justify-items: center;
-  }
-
-  .settings-menu {
-    width: 100%;
-  }
-
-  .settings-panel {
-    left: 0;
-    right: auto;
-    width: 100%;
   }
 
   .auth-form {
@@ -199,7 +196,7 @@
 
 @media (max-width: 560px) {
   h1 {
-    font-size: 2.55rem;
+    font-size: 3rem;
   }
 
   .card,
@@ -207,7 +204,6 @@
     border-radius: var(--radius-xl);
   }
 
-  .hero,
   .auth-card,
   .info-card,
   .routine-mobile-card,
@@ -215,7 +211,6 @@
     padding: 18px;
   }
 
-  .header-buttons,
   .auth-tabs {
     width: 100%;
     display: grid;
@@ -223,23 +218,38 @@
     justify-items: center;
   }
 
+  /* The top bar keeps just the mark, the account pill and the round buttons. */
+  .hero-topline .eyebrow {
+    display: none;
+  }
+
+  .auth-user-email {
+    max-width: 6.5rem;
+  }
+
+  .header-buttons,
+  .hero-actions,
+  .auth-status {
+    gap: 6px;
+  }
+
   .view-tabs {
     --tab-gap: 4px;
     width: calc(100% - 20px);
-    padding: 6px;
-    border-radius: 18px;
+    padding: 5px;
+    border-radius: 24px;
   }
 
   .view-tab-indicator {
-    border-radius: 14px;
+    border-radius: 19px;
   }
 
   .view-tab {
-    min-height: 48px;
+    min-height: 46px;
     gap: 5px;
-    padding: 0 8px;
-    border-radius: 14px;
-    font-size: 0.78rem;
+    padding: 0 6px;
+    border-radius: 19px;
+    font-size: 0.84rem;
   }
 
   .view-tab ion-icon {
@@ -273,23 +283,11 @@
     font-size: 0.78rem;
   }
 
-  .header-buttons {
-    max-width: 420px;
-    margin: 0 auto;
-  }
-
   .button,
   .auth-tab {
     width: 100%;
     justify-content: center;
     padding-inline: 0;
-  }
-
-  .settings-menu,
-  #themeToggle,
-  #logoutButton {
-    width: min(100%, 420px);
-    margin-inline: auto;
   }
 
   .mobile-card-head {
@@ -424,35 +422,6 @@
     justify-content: center;
   }
 
-  .body-workout-item,
-  .style-item-card {
-    grid-template-columns: 74px minmax(0, 1fr);
-  }
-
-  .body-workout-actions,
-  .style-item-actions {
-    grid-column: 1 / -1;
-    width: 100%;
-    justify-self: stretch;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  }
-
-  .body-workout-link,
-  .body-workout-edit,
-  .body-workout-delete,
-  .style-item-link,
-  .style-item-edit,
-  .style-item-delete {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .body-workout-item-image,
-  .style-item-image {
-    width: 74px;
-  }
-
   .body-calendar-panel {
     left: 0;
     right: auto;
@@ -480,7 +449,6 @@
     padding-bottom: calc(146px + env(safe-area-inset-bottom));
   }
 
-  .hero,
   .auth-card,
   .info-card,
   .routine-mobile-card,
@@ -489,12 +457,11 @@
   }
 
   h1 {
-    font-size: 2.2rem;
+    font-size: 2.6rem;
   }
 
   .button,
-  .auth-tab,
-  #settingsButton {
+  .auth-tab {
     min-height: 44px;
   }
 
@@ -514,41 +481,5 @@
   .mobile-icon-button {
     width: 100%;
     height: 42px;
-  }
-}
-
-/* On small screens the header's account and links stay one quiet row of text, as on the letter. */
-@media (max-width: 920px) {
-  .hero-actions {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 4px 18px;
-    min-width: 0;
-  }
-
-  .auth-status,
-  .auth-user {
-    width: auto;
-    justify-content: flex-start;
-  }
-
-  .header-buttons {
-    display: flex;
-    width: auto;
-    max-width: none;
-    margin: 0;
-    gap: 18px;
-    justify-content: flex-start;
-  }
-
-  .header-buttons .settings-menu,
-  .header-buttons .button,
-  .header-buttons #themeToggle,
-  .hero-actions #logoutButton {
-    width: auto;
-    margin: 0;
-    padding-inline: 4px;
   }
 }

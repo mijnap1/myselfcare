@@ -14,7 +14,7 @@ import { Header } from "../Header";
 import { BodyProgressSection } from "./body/BodyProgressSection";
 import { BodyNotesSection } from "./body/BodyNotesSection";
 import { AccountBadge } from "./AccountBadge";
-import { HeroGreeting } from "./HeroGreeting";
+import { HeroDate, HeroGreeting } from "./HeroGreeting";
 import { JournalContext, type JournalContextValue } from "./JournalContext";
 import { SettingsMenu } from "./SettingsMenu";
 import { ProductShelf } from "./skin/ProductShelf";
@@ -138,6 +138,7 @@ export function JournalApp({ userId, username, initialData, initialVersion }: Jo
           account={<AccountBadge username={username} onBeforeSignOut={flush} />}
           actions={<SettingsMenu onDuplicateWeek={duplicateWeek} onExport={exportJson} onImportFile={importJson} />}
           status={syncStatus}
+          dateline={<HeroDate />}
           greeting={<HeroGreeting username={username} />}
         />
 
