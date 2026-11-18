@@ -14,8 +14,9 @@ import { getBrowserSupabase } from "@/lib/supabase/client";
 const SAVE_DELAY_MS = 600;
 const RETRY_DELAY_MS = 5000;
 
-export type SyncState = "idle" | "error" | "conflict";
+export type SyncState = "idle" | "error";
 export type JournalRecipe = (draft: Draft<JournalData>) => void;
+type Edit = (base: JournalData) => JournalData;
 
 interface StoreOptions {
   userId: string;
@@ -24,8 +25,9 @@ interface StoreOptions {
 }
 
 /**
- * Owns the journal document: applies edits immutably, debounces saves to
- * Supabase, and reloads the latest copy if another device saved first.
+ * Owns the journal document: applies edits immutably and debounces saves to
+ * Supabase. If another device or tab saved first, the edits made here are
+ * replayed on top of that newer copy, so neither side's changes are lost.
  */
 export function useJournalStore({ userId, initialData, initialVersion }: StoreOptions) {
   const [data, setData] = useState(() => normalizeJournalData(initialData));
@@ -34,6 +36,8 @@ export function useJournalStore({ userId, initialData, initialVersion }: StoreOp
   const dataRef = useRef(data);
   const versionRef = useRef(initialVersion);
   const dirtyRef = useRef(false);
+  // Edits applied since the last confirmed save, in order.
+  const pendingRef = useRef<Edit[]>([]);
   const savingRef = useRef(false);
   const timerRef = useRef<number | undefined>(undefined);
   const flushRef = useRef<() => Promise<void>>(async () => {});
@@ -52,6 +56,7 @@ export function useJournalStore({ userId, initialData, initialVersion }: StoreOp
     const supabase = getBrowserSupabase();
     savingRef.current = true;
     dirtyRef.current = false;
+    const sentCount = pendingRef.current.length;
     let failed = false;
 
     try {
@@ -64,18 +69,23 @@ export function useJournalStore({ userId, initialData, initialVersion }: StoreOp
 
       if (result.status === "saved") {
         versionRef.current = result.version;
+        pendingRef.current = pendingRef.current.slice(sentCount);
         setSyncState("idle");
       } else {
-        // Another device saved first: take its copy instead of overwriting it.
+        // Another device saved first: replay this tab's edits on its copy and save that.
         const latest = await fetchJournalDocument(supabase, userId);
-        if (latest) {
-          const next = normalizeJournalData(latest.data);
-          versionRef.current = latest.version;
-          dataRef.current = next;
-          dirtyRef.current = false;
-          setData(next);
+        if (!latest) {
+          throw new Error("Journal document disappeared");
         }
-        setSyncState("conflict");
+        const merged = pendingRef.current.reduce(
+          (base, edit) => edit(base),
+          normalizeJournalData(latest.data)
+        );
+        versionRef.current = latest.version;
+        dataRef.current = merged;
+        dirtyRef.current = pendingRef.current.length > 0;
+        setData(merged);
+        setSyncState("idle");
       }
     } catch (error) {
       console.warn("Failed to save journal:", error);
@@ -99,6 +109,7 @@ export function useJournalStore({ userId, initialData, initialVersion }: StoreOp
     (recipe: JournalRecipe): JournalData => {
       const next = produce(dataRef.current, recipe);
       if (next !== dataRef.current) {
+        pendingRef.current.push((base) => produce(base, recipe));
         dataRef.current = next;
         dirtyRef.current = true;
         setData(next);
@@ -111,6 +122,7 @@ export function useJournalStore({ userId, initialData, initialVersion }: StoreOp
 
   const replace = useCallback(
     (next: JournalData) => {
+      pendingRef.current.push(() => next);
       dataRef.current = next;
       dirtyRef.current = true;
       setData(next);
@@ -119,11 +131,37 @@ export function useJournalStore({ userId, initialData, initialVersion }: StoreOp
     [schedule]
   );
 
-  // Save right away when the tab is hidden, and warn before closing with unsaved edits.
+  // Pick up changes saved elsewhere when nothing here is waiting to be saved.
+  const refresh = useCallback(async () => {
+    if (dirtyRef.current || savingRef.current) {
+      return;
+    }
+    try {
+      const latest = await fetchJournalDocument(getBrowserSupabase(), userId);
+      if (!latest || latest.version <= versionRef.current || dirtyRef.current || savingRef.current) {
+        return;
+      }
+      const next = normalizeJournalData(latest.data);
+      versionRef.current = latest.version;
+      dataRef.current = next;
+      setData(next);
+    } catch {
+      // Offline or signed out: the next save sorts it out.
+    }
+  }, [userId]);
+  const refreshRef = useRef(refresh);
+  useEffect(() => {
+    refreshRef.current = refresh;
+  }, [refresh]);
+
+  // Save right away when the tab is hidden, catch up when it comes back, and
+  // warn before closing with unsaved edits.
   useEffect(() => {
     const handleVisibility = () => {
       if (document.visibilityState === "hidden") {
         void flushRef.current();
+      } else {
+        void refreshRef.current();
       }
     };
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {

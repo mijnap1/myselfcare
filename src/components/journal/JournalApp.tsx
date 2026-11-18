@@ -123,9 +123,7 @@ export function JournalApp({ userId, username, initialData, initialVersion }: Jo
   const syncStatus =
     syncState === "idle" ? null : (
       <p className="save-status reset" role="status">
-        {syncState === "conflict"
-          ? "다른 기기에서 저장된 최신 기록을 불러왔어요. 방금 수정한 내용은 다시 확인해 주세요."
-          : "저장에 실패했어요. 연결되면 자동으로 다시 저장합니다."}{" "}
+        저장에 실패했어요. 연결되면 자동으로 다시 저장합니다.{" "}
         <button className="auth-reset-option" type="button" onClick={dismissSyncState}>
           닫기
         </button>
