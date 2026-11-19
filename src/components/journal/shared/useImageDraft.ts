@@ -33,7 +33,10 @@ export function useImageDraft() {
   }, []);
 
   const loadExisting = useCallback((image: ImageRef) => {
-    setDraft(image.imagePath || image.imageDataUrl ? { kind: "existing", image } : NONE);
+    // Keep only the image fields: callers pass the whole item, and spreading
+    // that back on save would undo the other edits made in the form.
+    const { imagePath, imageDataUrl } = image;
+    setDraft(imagePath || imageDataUrl ? { kind: "existing", image: { imagePath, imageDataUrl } } : NONE);
   }, []);
 
   const clear = useCallback(() => setDraft(NONE), []);
@@ -52,7 +55,7 @@ export async function commitImageDraft(
 ): Promise<ImageRef> {
   let next = EMPTY_IMAGE;
   if (draft.kind === "existing") {
-    next = draft.image;
+    next = { imagePath: draft.image.imagePath, imageDataUrl: draft.image.imageDataUrl };
   } else if (draft.kind === "new") {
     next = { imagePath: await uploadJournalImage(userId, draft.blob), imageDataUrl: "" };
   }
