@@ -111,7 +111,7 @@ export function ProductShelf() {
     const link = safeExternalUrl(product.link);
     return (
       <article key={product.id} className="skin-season-product-card">
-        <StoredImage image={product} className="skin-season-product-image" alt={product.name} />
+        <StoredImage image={product} className="skin-season-product-image" alt={product.name} zoomable />
         <div className="skin-season-product-copy">
           <p className="summary-kicker">{statusLabel(product.status)}</p>
           <h3>{product.name || "Untitled product"}</h3>

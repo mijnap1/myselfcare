@@ -196,7 +196,7 @@ export function MealSection() {
                       const link = safeExternalUrl(meal.link);
                       return (
                         <article key={meal.id} className={`body-workout-item${hasImage(meal) ? "" : " has-no-image"}`}>
-                          <StoredImage image={meal} className="body-workout-item-image" alt={meal.title} />
+                          <StoredImage image={meal} className="body-workout-item-image" alt={meal.title} zoomable />
                           <div className="body-workout-item-copy">
                             <h3>{meal.title || "이름 없는 메뉴"}</h3>
                             <InlineNote

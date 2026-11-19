@@ -196,7 +196,7 @@ export function WorkoutSection() {
                       const link = safeExternalUrl(workout.youtubeUrl);
                       return (
                         <article key={workout.id} className={`body-workout-item${hasImage(workout) ? "" : " has-no-image"}`}>
-                          <StoredImage image={workout} className="body-workout-item-image" alt={workout.title} />
+                          <StoredImage image={workout} className="body-workout-item-image" alt={workout.title} zoomable />
                           <div className="body-workout-item-copy">
                             <h3>{workout.title || "이름 없는 운동"}</h3>
                             <InlineNote

@@ -959,6 +959,22 @@
   font-weight: 600;
 }
 
+/* A check-in at (or past) the goal weight turns red, and so does the goal line once the latest one does. */
+.body-chart-svg .is-goal .body-chart-point {
+  fill: var(--goal);
+  stroke: var(--goal);
+}
+
+.body-chart-svg .is-goal .body-chart-value,
+.body-chart-svg .is-goal .body-chart-target-label {
+  fill: var(--goal);
+  font-weight: 700;
+}
+
+.body-chart-svg .is-goal .body-chart-target-line {
+  stroke: var(--goal);
+}
+
 .body-history {
   display: grid;
   gap: 10px;
@@ -3738,4 +3754,81 @@
 .style-item-card .style-item-edit:hover,
 .style-item-card .style-item-edit:focus-visible {
   background: var(--accent-strong);
+}
+
+/* Saved photos open full size: a dimmed, blurred page with the photo centered. */
+.is-zoomable {
+  cursor: zoom-in;
+}
+
+.is-zoomable:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.image-lightbox {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 24px;
+  border: 0;
+  background: transparent;
+  cursor: zoom-out;
+}
+
+.image-lightbox[open] {
+  display: grid;
+  place-items: center;
+  animation: lightbox-in 220ms var(--ease-out);
+}
+
+.image-lightbox::backdrop {
+  background: rgba(12, 14, 18, 0.72);
+  backdrop-filter: blur(8px);
+}
+
+.image-lightbox img {
+  max-width: min(100%, 1100px);
+  max-height: calc(100dvh - 120px);
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.6);
+}
+
+.image-lightbox-close {
+  position: fixed;
+  top: max(16px, env(safe-area-inset-top));
+  right: 16px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  cursor: pointer;
+}
+
+.image-lightbox-close:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.7);
+  outline-offset: 2px;
+}
+
+.image-lightbox-close ion-icon {
+  font-size: 1.5rem;
+}
+
+html:has(.image-lightbox[open]) {
+  overflow: hidden;
+}
+
+@keyframes lightbox-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
 }

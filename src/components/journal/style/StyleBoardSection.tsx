@@ -209,7 +209,7 @@ export function StyleBoardSection() {
                         const link = safeExternalUrl(item.link);
                         return (
                           <article key={item.id} className={`style-item-card${hasImage(item) ? "" : " has-no-image"}`}>
-                            <StoredImage image={item} className="style-item-image" alt={item.title} />
+                            <StoredImage image={item} className="style-item-image" alt={item.title} zoomable />
                             <div className="style-item-copy">
                               <h3>{item.title || "이름 없는 스타일"}</h3>
                               <InlineNote

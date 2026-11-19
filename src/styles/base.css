@@ -42,6 +42,7 @@
   --motion-fast: 150ms;
   --motion-medium: 220ms;
   --danger: #e0533d;
+  --goal: #e5383b;
   --success: #2f8f5b;
   --radius-xl: 28px;
   --radius-lg: 20px;
@@ -78,6 +79,7 @@
   --shadow-pop: 0 2px 8px rgba(0, 0, 0, 0.35), 0 28px 54px -18px rgba(0, 0, 0, 0.8);
   --focus-ring: rgba(92, 178, 245, 0.4);
   --danger: #ff8f7a;
+  --goal: #ff5c5f;
   --success: #6cd39a;
 }
 
